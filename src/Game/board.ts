@@ -8,6 +8,7 @@ const CELL_DEPTH = 0.5;
 export class Board
 {
     private entities: Array<Entity>;
+    private cells: Array<BABYLON.Mesh>
     private width : number;
     private height : number;
 
