@@ -22,7 +22,7 @@ export class Game
         // Default intensity is 1. Let's dim the light a small amount
         light.intensity = 0.7;
 
-        let tabuleiro = new Board(this.scene, 10, 10);
+        let tabuleiro = new Board(this.scene, 5, 5);
     }
 
     async Start() : Promise<void> 

@@ -9,8 +9,8 @@ export class Board
     //TO DO: Add logic for creating the cells
     constructor(scene: BABYLON.Scene, width: number, height: number)
     {
-        let left = -(width * CELL_WIDTH) * 0.5;
-        let top = -(height * CELL_DEPTH) * 0.5;
+        let left = -((width >> 1) * CELL_WIDTH);
+        let top = -((height >> 1) * CELL_DEPTH);
 
         for (let x = 0; x < width; x++) 
         {
