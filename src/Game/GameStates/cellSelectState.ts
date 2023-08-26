@@ -2,18 +2,22 @@ import { GameState } from "./state";
 
 export class CellSelectState implements GameState
 {
-    Start(): void {
-        throw new Error("Method not implemented.");
-    }
-    End(): void {
-        throw new Error("Method not implemented.");
-    }
-    Update(deltaT : number): void {
-        throw new Error("Method not implemented.");
-    }
-    ShouldEnd(): boolean 
+    Start(): void 
     {
-        throw new Error("Method not implemented.");
+        console.log("Starting  CellSelectState");
     }
 
+    End(): void 
+    {
+        console.log("Ending  CellSelectState");
+    }
+
+    Update(deltaT : number): void 
+    {
+    }
+
+    ShouldEnd(): boolean 
+    {
+        return false;
+    }
 } 

@@ -4,20 +4,24 @@ import { CellSelectState } from "./cellSelectState";
 import { EntityMoveState } from "./entityMoveState";
 import { ActionSelectState } from "./actionSelectState";
 import { Board } from "../board";
+import * as BABYLON from "@babylonjs/core";
 
 export class GameStateMachine 
 {
     states: Array<GameState>;
     currentStateIndex: number;
 
-    constructor(board: Board)
+    constructor(board: Board, scene: BABYLON.Scene, camera: BABYLON.Camera)
     {
         this.states = new Array<GameState>();
-        this.states.push(new EntitySelectState());
+        this.states.push(new EntitySelectState(scene, board, camera));
         this.states.push(new CellSelectState());
         this.states.push(new EntityMoveState);
         this.states.push(new ActionSelectState);
         this.currentStateIndex = 0;
+
+        let currentState = this.GetCurrentState();
+        currentState.Start()
     }
 
     Update(deltaT : number) : void

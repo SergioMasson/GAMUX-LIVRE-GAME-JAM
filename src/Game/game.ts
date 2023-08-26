@@ -65,7 +65,7 @@ export class Game
         //this.scene.debugLayer.show();
 
         this.board.HighlightCells(0, 0, 4);
-        this.gameStateMachine = new GameStateMachine(this.board)
+        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera)
     }
 
     async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>

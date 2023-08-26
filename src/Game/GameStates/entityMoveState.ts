@@ -2,18 +2,23 @@ import { GameState } from "./state";
 
 export class EntityMoveState implements GameState
 {
-    Start(): void {
-        throw new Error("Method not implemented.");
+    Start(): void 
+    {
+        
     }
-    End(): void {
-        throw new Error("Method not implemented.");
+
+    End(): void 
+    {
+        
     }
-    Update(deltaT : number): void {
-        throw new Error("Method not implemented.");
+
+    Update(deltaT : number): void 
+    {
     }
+
     ShouldEnd(): boolean 
     {
-        throw new Error("Method not implemented.");
+        return false;
     }
     
 } 

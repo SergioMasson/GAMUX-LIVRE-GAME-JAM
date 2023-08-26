@@ -6,12 +6,15 @@ export class Entity
 {
     private mainBoard : Board;
     private instanceMesh: BABYLON.InstancedMesh;
+    private boardPosition: BABYLON.Vector2;
+    private moveRange: number;
 
     constructor(board : Board, rootMesh: BABYLON.Mesh) 
     {
         this.mainBoard = board;
         this.instanceMesh = rootMesh.createInstance("entity");
         this.instanceMesh.metadata = { type: "entity" };
+        this.moveRange = 4;
     }
 
     public CanMove(x: number, z: number) : boolean
@@ -26,5 +29,15 @@ export class Entity
 
         //TO DO: Add logic to move using animation.
         this.instanceMesh.position = position;
+        this.boardPosition = new BABYLON.Vector2(x, z);
+    }
+
+    public GetBoardPosition() :  BABYLON.Vector2
+    {
+        return this.boardPosition;
+    }
+
+    public GetRange() : number {
+        return this.moveRange;
     }
 }

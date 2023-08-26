@@ -153,9 +153,27 @@ export class Board
                 lastDistance = distance.length();
                 bestFit = element.position;
             }
-            
         }
 
         return bestFit;
+    }
+
+    TrySelectEntityAtWorldPosition(worldPoint: BABYLON.Vector3) : Entity | undefined
+    {
+        var selectedIndex = 0;
+        var lastDistance = 1000000;
+
+        for (let index = 0; index < this.cells.length; index++) {
+            const element = this.cells[index];
+            const distance = element.position.subtract(worldPoint);
+            
+            if(distance.length() < lastDistance)
+            {
+                lastDistance = distance.length();
+                selectedIndex = index;
+            }
+        }
+
+        return this.entities[selectedIndex];
     }
 }
