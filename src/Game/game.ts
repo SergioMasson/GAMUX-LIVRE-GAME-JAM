@@ -23,6 +23,8 @@ export class Game
 
         let camera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), scene);
         camera.attachControl(canvas);
+        camera.upperRadiusLimit = 10;
+        camera.lowerRadiusLimit = 3;
 
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
