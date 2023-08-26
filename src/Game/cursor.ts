@@ -73,8 +73,9 @@ export class Cursor
         {
             var worldPoint = pickResult.pickedPoint;
 
-            let finalPosition = this.board.FitPositionToCell(worldPoint);        
-            this.transformNode.setAbsolutePosition(finalPosition)
+            let finalPosition = this.board.FitPositionToCell(worldPoint);
+
+            this.transformNode.setAbsolutePosition(finalPosition);
         }       
     }
 }

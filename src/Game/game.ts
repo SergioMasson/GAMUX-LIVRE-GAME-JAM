@@ -2,6 +2,7 @@ import * as BABYLON from "@babylonjs/core";
 import { Board } from "./board";
 import { Entity } from "./entity";
 import { Cursor } from "./cursor";
+import { GameStateMachine } from "./GameStates/gameStateMachine";
 
 export class Game 
 {
@@ -19,6 +20,8 @@ export class Game
     private enemies : Array<Entity>;
     
     private mouseDown: boolean;
+
+    private gameStateMachine: GameStateMachine;
 
     constructor(scene: BABYLON.Scene, canvas : HTMLCanvasElement) 
     {
@@ -75,6 +78,7 @@ export class Game
         //this.scene.debugLayer.show();
 
         this.board.HighlightCells(0, 0, 4);
+        this.gameStateMachine = new GameStateMachine(this.board)
     }
 
     async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>
@@ -95,5 +99,6 @@ export class Game
     {
         this.cursor.Update();
         this.board.update(deltaT);
+        this.gameStateMachine.Update(deltaT);
     }
 }
