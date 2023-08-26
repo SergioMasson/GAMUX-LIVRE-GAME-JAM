@@ -19,30 +19,28 @@ export class Game
     {
         this.scene = scene;
         this.canvas = canvas;
-        this.board = new Board(scene, 8, 8);
+        this.board = new Board(scene, 20, 20);
 
         let camera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), scene);
         camera.attachControl(canvas);
 
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
-        scene.onPointerDown = function castRay(){
+        // Default intensity is 1. Let's dim the light a small amount
+        light.intensity = 0.7;
+
+        /*scene.onPointerDown = function castRay() {
             var ray = scene.createPickingRay(scene.pointerX, scene.pointerY, BABYLON.Matrix.Identity(), camera, false);	
 
             var hit = scene.pickWithRay(ray);
 
-            if (hit.pickedMesh){
-                console.log(hit.pickedMesh.metadata);
-                if (hit.pickedMesh.metadata.type === "cell") {
-                    const cellMaterial = new BABYLON.StandardMaterial("");
-                    cellMaterial.diffuseColor = BABYLON.Color3.Blue();
-                    hit.pickedMesh.material = cellMaterial;
+            if (hit.pickedMesh) {
+                if (hit.pickedMesh.metadata) {
+                    if (hit.pickedMesh.metadata.type === "cell") {
+                    }
                 }
             }
-        }   
-
-        // Default intensity is 1. Let's dim the light a small amount
-        light.intensity = 0.7;
+        }*/
     }
 
     async Start() : Promise<void> 
@@ -55,6 +53,10 @@ export class Game
 
         var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
         player1.SetPosition(2, 0);
+
+        this.scene.debugLayer.show();
+
+        this.board.HighlightCells(0, 0, 4);
     }
 
     async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>
@@ -73,6 +75,6 @@ export class Game
 
     Update(deltaT: number) : void
     {
-
+        this.board.update(deltaT);
     }
 }
