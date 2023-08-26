@@ -1,4 +1,5 @@
-import * as BABYLON from "@babylonjs/core/"
+import * as BABYLON from "@babylonjs/core/";
+import { Entity } from "./entity";
 
 const CELL_WIDTH = 0.5;
 const CELL_HEIGHT = 0.05;
@@ -6,6 +7,10 @@ const CELL_DEPTH = 0.5;
 
 export class Board
 {
+    private entities: Array<Entity>;
+    private width : number;
+    private height : number;
+
     //TO DO: Add logic for creating the cells
     constructor(scene: BABYLON.Scene, width: number, height: number)
     {
@@ -31,6 +36,10 @@ export class Board
                 cellMaterial.diffuseColor = (x & 1) ^ (y & 1) ? BABYLON.Color3.Red() : BABYLON.Color3.Green();
             }
         }
+
+        this.entities = new Array<Entity>(width * height);
+        this.width = width;
+        this.height = height;
     }
 
     SelectCell(width: number, height: number) : void
@@ -38,8 +47,18 @@ export class Board
         
     }
 
-    GetCellObject(width: number, height: number) : BABYLON.Mesh
+    GetCellCenterPosition(x: number, z: number) : BABYLON.Vector3
     {
-        return null;
+        return new BABYLON.Vector3();
+    }
+
+    GetEntityAtCell(x: number, z: number) : Entity | null
+    {
+        return this.entities[x + (this.width * z)];
+    }
+
+    SetEntityToCell(entity: Entity, x: number, z: number) : void
+    {
+        this.entities[x + (this.width * z)] = entity;
     }
 }

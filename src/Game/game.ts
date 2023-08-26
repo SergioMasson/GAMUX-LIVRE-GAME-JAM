@@ -8,6 +8,9 @@ export class Game
     private board : Board;
     private mainCamera : BABYLON.FreeCamera;
 
+    private playerMesh : BABYLON.AbstractMesh;
+    private enemyMesh : BABYLON.AbstractMesh;
+
     constructor(scene: BABYLON.Scene, canvas : HTMLCanvasElement) 
     {
         this.scene = scene;
@@ -27,7 +30,21 @@ export class Game
 
     async Start() : Promise<void> 
     {
+        this.playerMesh = await this.LoadEntity("player.glb");
+        this.enemyMesh = await this.LoadEntity("enemy.glb");
     }
+
+    async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>
+    {
+        const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "./models/", `${entityName}.glb`);
+        const result = resultPlayer.meshes[0].getChildMeshes()[0];
+        const playerMaterial = new BABYLON.StandardMaterial("");
+        result.material = playerMaterial;
+
+        playerMaterial.diffuseTexture = new BABYLON.Texture(`./textures/${entityName}.png`);
+        return result;
+    }
+
 
     Update(deltaT: number) : void
     {
