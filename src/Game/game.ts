@@ -12,7 +12,8 @@ export class Game
     private mainCamera : BABYLON.FreeCamera;
 
     private playerMesh : BABYLON.AbstractMesh;
-    private enemyMesh : BABYLON.AbstractMesh;
+    private enemyMesh: BABYLON.AbstractMesh;
+    private pointerMesh: BABYLON.AbstractMesh;
 
     private players : Array<Entity>;
     private enemies : Array<Entity>;
@@ -59,6 +60,10 @@ export class Game
     {
         this.playerMesh = await this.LoadEntity("player");
         this.enemyMesh = await this.LoadEntity("enemy");
+        this.pointerMesh = await this.LoadEntity("pointer");
+
+        this.pointerMesh.isVisible = true;
+        this.pointerMesh.scaling = new BABYLON.Vector3(0.7, 0.7, 0.7);
 
         var player0 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
         player0.SetPosition(1, 0);
@@ -66,13 +71,8 @@ export class Game
         var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
         player1.SetPosition(2, 0);
 
-        var cursorMesh = BABYLON.MeshBuilder.CreateCylinder("cursor");
-        cursorMesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
-        this.cursor = new Cursor(this.board, this.scene, this.mainCamera, cursorMesh);
-
-        this.scene.debugLayer.show();
-
-        this.scene.debugLayer.show();
+        this.cursor = new Cursor(this.board, this.scene, this.mainCamera, this.pointerMesh as BABYLON.Mesh);
+        //this.scene.debugLayer.show();
 
         this.board.HighlightCells(0, 0, 4);
     }

@@ -23,8 +23,10 @@ export class Cursor
 
         this.transformNode = new BABYLON.TransformNode("CursorRoot");
         this.mesh.setParent(this.transformNode, true);
+        this.mesh.rotation = new BABYLON.Vector3(Math.PI, 0, 0);
 
         this.animationGroup.play(true);
+        
     }
 
     private CreateUpDownAnimation(): void {
