@@ -1,5 +1,6 @@
 import * as BABYLON from "@babylonjs/core";
 import { Board } from "./board";
+import { Entity } from "./entity";
 
 export class Game 
 {
@@ -10,6 +11,9 @@ export class Game
 
     private playerMesh : BABYLON.AbstractMesh;
     private enemyMesh : BABYLON.AbstractMesh;
+
+    private players : Array<Entity>;
+    private enemies : Array<Entity>;
 
     constructor(scene: BABYLON.Scene, canvas : HTMLCanvasElement) 
     {
@@ -45,6 +49,12 @@ export class Game
     {
         this.playerMesh = await this.LoadEntity("player");
         this.enemyMesh = await this.LoadEntity("enemy");
+
+        var player0 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
+        player0.SetPosition(1, 0);
+
+        var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
+        player1.SetPosition(2, 0);
     }
 
     async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>
@@ -54,6 +64,7 @@ export class Game
         result.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
         const playerMaterial = new BABYLON.StandardMaterial("");
         result.material = playerMaterial;
+        result.isVisible = false;
 
         playerMaterial.diffuseTexture = new BABYLON.Texture(`./textures/${entityName}.png`);
         return result;

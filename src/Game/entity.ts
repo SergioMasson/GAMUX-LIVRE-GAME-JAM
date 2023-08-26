@@ -7,9 +7,10 @@ export class Entity
     private mainBoard : Board;
     private instanceMesh: BABYLON.InstancedMesh;
 
-    constructor(board : Board) 
+    constructor(board : Board, rootMesh: BABYLON.Mesh) 
     {
         this.mainBoard = board;
+        this.instanceMesh = rootMesh.createInstance("entity");
     }
 
     public CanMove(x: number, z: number) : boolean
@@ -17,18 +18,12 @@ export class Entity
         return true;
     }
 
-    public Move(x: number, z: number) : void
+    public SetPosition(x: number, z: number) : void
     {
         this.mainBoard.SetEntityToCell(this, x, z);
         const position = this.mainBoard.GetCellCenterPosition(x, z);
 
         //TO DO: Add logic to move using animation.
-
-
         this.instanceMesh.position = position;
-    }
-
-    public InstantiateMesh(rootMesh: BABYLON.Mesh) : void {
-        this.instanceMesh = rootMesh.createInstance("entity");
     }
 }
