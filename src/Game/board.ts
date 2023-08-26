@@ -1,15 +1,17 @@
 import * as BABYLON from "@babylonjs/core/"
 
-const CELL_WIDTH = 10;
-const CELL_HEIGHT = 10;
-const CELL_DEPTH = 1;
-
+const CELL_WIDTH = 0.5;
+const CELL_HEIGHT = 0.05;
+const CELL_DEPTH = 0.5;
 
 export class Board
 {
     //TO DO: Add logic for creating the cells
     constructor(scene: BABYLON.Scene, width: number, height: number)
     {
+        let left = -(width * CELL_WIDTH) * 0.5;
+        let top = -(height * CELL_DEPTH) * 0.5;
+
         for (let x = 0; x < width; x++) 
         {
             for (let y = 0; y < height; y++) 
@@ -19,7 +21,14 @@ export class Board
                     width: CELL_WIDTH, 
                     height: CELL_HEIGHT,
                     depth: CELL_DEPTH
-                }, scene);
+                    }, scene);
+                
+                cell.position = new BABYLON.Vector3(left + x * CELL_WIDTH, 0, top + y * CELL_DEPTH);
+
+                const cellMaterial = new BABYLON.StandardMaterial("");
+                cell.material = cellMaterial;
+
+                cellMaterial.diffuseColor = (x & 1) ^ (y & 1) ? BABYLON.Color3.Red() : BABYLON.Color3.Green();
             }
         }
     }
