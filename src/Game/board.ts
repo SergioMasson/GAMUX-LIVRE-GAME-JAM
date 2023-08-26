@@ -106,6 +106,13 @@ export class Board
     }
 
     UnHighlightCells(): void {
+        for (let k = 0; k < this.highlightedCells.length; k++) {
+            let cell = this.highlightedCells[k];
+            let material = cell.material as BABYLON.StandardMaterial;
+
+            material.emissiveColor = new BABYLON.Color3(0,0,0);
+        }
+
         this.highlightedCells = [];
     }
 

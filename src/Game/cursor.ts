@@ -22,7 +22,7 @@ export class Cursor
         this.CreateUpDownAnimation();
 
         this.transformNode = new BABYLON.TransformNode("CursorRoot");
-        this.mesh.setParent(this.transformNode, true, true);
+        this.mesh.setParent(this.transformNode, true);
 
         this.animationGroup.play(true);
     }

@@ -16,12 +16,13 @@ export class Game
 
     private players : Array<Entity>;
     private enemies : Array<Entity>;
+    
+    private mouseDown: boolean;
 
     constructor(scene: BABYLON.Scene, canvas : HTMLCanvasElement) 
     {
         this.scene = scene;
         this.canvas = canvas;
-        this.board = new Board(scene, 20, 20);
         this.board = new Board(scene, 20, 20);
 
         let camera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), scene);
@@ -46,6 +47,12 @@ export class Game
                 }
             }
         }*/
+
+        const game = this;
+
+        scene.onPointerDown = function castRay() {
+            game.board.UnHighlightCells();
+        }
     }
 
     async Start() : Promise<void> 
@@ -86,6 +93,7 @@ export class Game
 
     Update(deltaT: number) : void
     {
-        this.cursor.Update();        this.board.update(deltaT);
+        this.cursor.Update();
+        this.board.update(deltaT);
     }
 }
