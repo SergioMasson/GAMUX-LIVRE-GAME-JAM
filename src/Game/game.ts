@@ -1,12 +1,14 @@
 import * as BABYLON from "@babylonjs/core";
 import { Board } from "./board";
 import { Entity } from "./entity";
+import { Cursor } from "./cursor";
 
 export class Game 
 {
     private scene : BABYLON.Scene;
     private canvas : HTMLCanvasElement;
     private board : Board;
+    private cursor : Cursor;
     private mainCamera : BABYLON.FreeCamera;
 
     private playerMesh : BABYLON.AbstractMesh;
@@ -20,9 +22,12 @@ export class Game
         this.scene = scene;
         this.canvas = canvas;
         this.board = new Board(scene, 20, 20);
+        this.board = new Board(scene, 20, 20);
 
         let camera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), scene);
         camera.attachControl(canvas);
+        camera.upperRadiusLimit = 10;
+        camera.lowerRadiusLimit = 3;
 
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
@@ -54,6 +59,12 @@ export class Game
         var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
         player1.SetPosition(2, 0);
 
+        var cursorMesh = BABYLON.MeshBuilder.CreateCylinder("cursor");
+        cursorMesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+        this.cursor = new Cursor(this.board, this.scene, this.mainCamera, cursorMesh);
+
+        this.scene.debugLayer.show();
+
         this.scene.debugLayer.show();
 
         this.board.HighlightCells(0, 0, 4);
@@ -75,6 +86,6 @@ export class Game
 
     Update(deltaT: number) : void
     {
-        this.board.update(deltaT);
+        this.cursor.Update();        this.board.update(deltaT);
     }
 }

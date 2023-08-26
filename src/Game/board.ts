@@ -18,10 +18,13 @@ export class Board
     private colorAlpha: number;
     private timer: number;
 
+    private hightligthedCells : Array<BABYLON.Mesh>;
+
     //TO DO: Add logic for creating the cells
     constructor(scene: BABYLON.Scene, width: number, height: number)
     {
         this.cells = new Array<BABYLON.Mesh>(0);
+        this.cells = new Array<BABYLON.Mesh>();
         let left = -((width >> 1) * CELL_WIDTH);
         let top = -((height >> 1) * CELL_DEPTH);
 
@@ -108,6 +111,7 @@ export class Board
 
     SelectCell(width: number, height: number) : void
     {
+        
     }
 
     GetCellCenterPosition(x: number, z: number) : BABYLON.Vector3
@@ -126,5 +130,25 @@ export class Board
     SetEntityToCell(entity: Entity, x: number, z: number) : void
     {
         this.entities[x + (this.width * z)] = entity;
+    }
+
+    FitPositionToCell(position: BABYLON.Vector3) : BABYLON.Vector3 
+    {
+        var bestFit = new BABYLON.Vector3(0, 0, 0);
+        var lastDistance = 1000000;
+
+        for (let index = 0; index < this.cells.length; index++) {
+            const element = this.cells[index];
+            const distance = element.position.subtract(position);
+            
+            if(distance.length() < lastDistance)
+            {
+                lastDistance = distance.length();
+                bestFit = element.position;
+            }
+            
+        }
+
+        return bestFit;
     }
 }
