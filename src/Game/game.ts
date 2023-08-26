@@ -39,19 +39,6 @@ export class Game
         // Default intensity is 1. Let's dim the light a small amount
         light.intensity = 0.7;
 
-        /*scene.onPointerDown = function castRay() {
-            var ray = scene.createPickingRay(scene.pointerX, scene.pointerY, BABYLON.Matrix.Identity(), camera, false);	
-
-            var hit = scene.pickWithRay(ray);
-
-            if (hit.pickedMesh) {
-                if (hit.pickedMesh.metadata) {
-                    if (hit.pickedMesh.metadata.type === "cell") {
-                    }
-                }
-            }
-        }*/
-
         const game = this;
 
         scene.onPointerDown = function castRay() {

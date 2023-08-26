@@ -9,7 +9,8 @@ export class Cursor
     private camera : BABYLON.Camera;
     private scene : BABYLON.Scene;
     private mesh: BABYLON.Mesh;
-    private animationGroup: BABYLON.AnimationGroup;
+    private animationGroupLow: BABYLON.AnimationGroup;
+    private animationGroupHigh: BABYLON.AnimationGroup;
     private transformNode: BABYLON.TransformNode;
 
     constructor(board: Board, scene: BABYLON.Scene, camera: BABYLON.Camera, mesh: BABYLON.Mesh)
@@ -18,18 +19,20 @@ export class Cursor
         this.scene = scene;
         this.camera = camera;
         this.mesh = mesh;
-        this.animationGroup = new BABYLON.AnimationGroup("Cursor");
-        this.CreateUpDownAnimation();
+        this.animationGroupLow = new BABYLON.AnimationGroup("Cursor");
+        this.animationGroupHigh = new BABYLON.AnimationGroup("Cursor");
+      
+        this.CreateUpDownAnimation(CURSOR_BASE_HEIGHT, CURSOR_BASE_HEIGHT + 0.5, this.animationGroupLow);
+        this.CreateUpDownAnimation(CURSOR_BASE_HEIGHT + 0.5, CURSOR_BASE_HEIGHT + 1, this.animationGroupHigh);
 
         this.transformNode = new BABYLON.TransformNode("CursorRoot");
         this.mesh.setParent(this.transformNode, true);
         this.mesh.rotation = new BABYLON.Vector3(Math.PI, 0, 0);
 
-        this.animationGroup.play(true);
-        
+        this.animationGroupLow.play(true);
     }
 
-    private CreateUpDownAnimation(): void {
+    private CreateUpDownAnimation(base: number, top: number, animgroup: BABYLON.AnimationGroup): void {
         const frameRate = 30;
         const animDuration = 2 * frameRate;   
     
@@ -45,23 +48,23 @@ export class Cursor
     
         jumpYKeys.push({
           frame: 0,
-          value:  CURSOR_BASE_HEIGHT
+          value:  base
         });
     
         jumpYKeys.push({
           frame: 0.5 * animDuration,
-          value: CURSOR_BASE_HEIGHT + 0.5
+          value: top
         });
     
         jumpYKeys.push({
           frame: 1 * animDuration,
-          value: CURSOR_BASE_HEIGHT
+          value: base
         });
     
     
         jumpY.setKeys(jumpYKeys);  
-        this.animationGroup.addTargetedAnimation(jumpY, this.mesh);
-      }
+        animgroup.addTargetedAnimation(jumpY, this.mesh);
+    }
     
  
     Update() : void
@@ -71,11 +74,28 @@ export class Cursor
 
         if (pickResult.hit == true)
         {
-            var worldPoint = pickResult.pickedPoint;
+          var worldPoint = pickResult.pickedPoint;
 
-            let finalPosition = this.board.FitPositionToCell(worldPoint);
+          let finalPosition = this.board.FitPositionToCell(worldPoint);
 
-            this.transformNode.setAbsolutePosition(finalPosition);
+          this.transformNode.setAbsolutePosition(finalPosition);
+
+          if (!pickResult) return;
+          if (!pickResult.pickedMesh) return;
+          if (!pickResult.pickedMesh.metadata) return;
+          if (!pickResult.pickedMesh.metadata.type) return;
+          if (pickResult.pickedMesh.metadata.type !== "cell") return;
+
+          let metadataResultante = pickResult.pickedMesh.metadata;
+
+          if (this.board.GetEntityAtCell(metadataResultante.x, metadataResultante.z) !== undefined) {
+            this.animationGroupLow.stop();
+            this.animationGroupHigh.play(true);
+          }
+          else {
+            this.animationGroupHigh.stop();
+            this.animationGroupLow.play(true);
+          }
         }       
     }
 }
