@@ -11,6 +11,7 @@ export class Entity
     {
         this.mainBoard = board;
         this.instanceMesh = rootMesh.createInstance("entity");
+        this.instanceMesh.metadata = { type: "entity" };
     }
 
     public CanMove(x: number, z: number) : boolean

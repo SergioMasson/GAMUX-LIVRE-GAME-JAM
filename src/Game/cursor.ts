@@ -84,11 +84,10 @@ export class Cursor
           if (!pickResult.pickedMesh) return;
           if (!pickResult.pickedMesh.metadata) return;
           if (!pickResult.pickedMesh.metadata.type) return;
-          if (pickResult.pickedMesh.metadata.type !== "cell") return;
 
           let metadataResultante = pickResult.pickedMesh.metadata;
 
-          if (this.board.GetEntityAtCell(metadataResultante.x, metadataResultante.z) !== undefined) {
+          if (this.board.GetEntityAtCell(metadataResultante.x, metadataResultante.z) !== undefined || metadataResultante.type === "entity") {
             this.animationGroupLow.stop();
             this.animationGroupHigh.play(true);
           }
