@@ -50,7 +50,10 @@ export class Board
 
     GetCellCenterPosition(x: number, z: number) : BABYLON.Vector3
     {
-        return new BABYLON.Vector3();
+        const sceneX = (x * CELL_WIDTH) - (CELL_WIDTH * this.width / 2);
+        const sceneZ = (z * CELL_DEPTH) - (CELL_DEPTH * this.height / 2);
+
+        return new BABYLON.Vector3(sceneX, 0, sceneZ);
     }
 
     GetEntityAtCell(x: number, z: number) : Entity | null
