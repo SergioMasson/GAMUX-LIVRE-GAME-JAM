@@ -15,6 +15,7 @@ export class Board
     //TO DO: Add logic for creating the cells
     constructor(scene: BABYLON.Scene, width: number, height: number)
     {
+        this.cells = new Array<BABYLON.Mesh>(width * height);
         let left = -((width >> 1) * CELL_WIDTH);
         let top = -((height >> 1) * CELL_DEPTH);
 
@@ -30,11 +31,14 @@ export class Board
                     }, scene);
                 
                 cell.position = new BABYLON.Vector3(left + x * CELL_WIDTH, 0, top + y * CELL_DEPTH);
+                cell.metadata = {type: "cell", x: x, y: y };
 
                 const cellMaterial = new BABYLON.StandardMaterial("");
                 cell.material = cellMaterial;
 
                 cellMaterial.diffuseColor = (x & 1) ^ (y & 1) ? BABYLON.Color3.Red() : BABYLON.Color3.Green();
+
+                this.cells.push(cell);
             }
         }
 

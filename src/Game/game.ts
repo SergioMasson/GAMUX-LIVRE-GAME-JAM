@@ -22,10 +22,23 @@ export class Game
 
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
+        scene.onPointerDown = function castRay(){
+            var ray = scene.createPickingRay(scene.pointerX, scene.pointerY, BABYLON.Matrix.Identity(), camera, false);	
+
+            var hit = scene.pickWithRay(ray);
+
+            if (hit.pickedMesh){
+                console.log(hit.pickedMesh.metadata);
+                if (hit.pickedMesh.metadata.type === "cell") {
+                    const cellMaterial = new BABYLON.StandardMaterial("");
+                    cellMaterial.diffuseColor = BABYLON.Color3.Blue();
+                    hit.pickedMesh.material = cellMaterial;
+                }
+            }
+        }   
+
         // Default intensity is 1. Let's dim the light a small amount
         light.intensity = 0.7;
-
-        let tabuleiro = new Board(this.scene, 5, 5);
     }
 
     async Start() : Promise<void> 
