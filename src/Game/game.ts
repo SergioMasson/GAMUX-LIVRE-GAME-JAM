@@ -44,7 +44,7 @@ export class Game
 
     async Start() : Promise<void> 
     {
-        this.playerMesh = await this.LoadEntity("player");
+        this.playerMesh = await this.LoadEntity("swordman");
         this.enemyMesh = await this.LoadEntity("enemy");
         this.pointerMesh = await this.LoadEntity("pointer");
 
@@ -67,12 +67,12 @@ export class Game
     {
         const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "./models/", `${entityName}.glb`);
         const result = resultPlayer.meshes[0].getChildMeshes()[0];
-        result.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+        result.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
         const playerMaterial = new BABYLON.StandardMaterial("");
         result.material = playerMaterial;
         result.isVisible = false;
 
-        playerMaterial.diffuseTexture = new BABYLON.Texture(`./textures/${entityName}.png`);
+        playerMaterial.diffuseTexture = new BABYLON.Texture(`./textures/player.png`);
         return result;
     }
 
