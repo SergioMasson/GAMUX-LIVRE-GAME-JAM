@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { Cursor } from "./cursor";
 import { GameStateMachine } from "./GameStates/gameStateMachine";
 import { GameLevel } from "./level";
+import { Sound } from "./sound";
 
 export class Game 
 {
@@ -11,6 +12,7 @@ export class Game
     private cursor : Cursor;
     private mainCamera : BABYLON.ArcRotateCamera;
     private gameStateMachine: GameStateMachine;
+    private sound: Sound;
 
     constructor(scene: BABYLON.Scene, canvas : HTMLCanvasElement) 
     {
@@ -25,9 +27,9 @@ export class Game
         this.scene.debugLayer.show();
 
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-
-        // Default intensity is 1. Let's dim the light a small amount
         light.intensity = 0.7;
+
+        this.sound = new Sound(scene);
     }
 
     async Start() : Promise<void> 
@@ -37,7 +39,7 @@ export class Game
         
         this.board = await GameLevel.LoadFromJSONAsync("level0", this.scene);
         this.cursor = new Cursor(this.board, this.scene, this.mainCamera, pointerMesh as BABYLON.Mesh);    
-        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera, this.cursor);
+        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera, this.cursor, this.sound);
     }
 
     async LoadEntity(entityName: string, scaling: BABYLON.Vector3) : Promise<BABYLON.AbstractMesh>

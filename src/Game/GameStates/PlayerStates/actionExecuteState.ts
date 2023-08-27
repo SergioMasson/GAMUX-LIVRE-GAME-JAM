@@ -4,6 +4,7 @@ import { Cursor } from "../../cursor";
 import { Entity } from "../../entity";
 import * as BABYLON from "@babylonjs/core";
 import * as GUI from "@babylonjs/gui";
+import { Sound } from "../../sound";
 
 export class ActionExecuteState implements GameState
 {
@@ -12,10 +13,12 @@ export class ActionExecuteState implements GameState
 		private watchedEntity: Entity;
 		private attackedEntities: Array<Entity>;
 		private gameState: Array<number>;
+		private soundPlayer: Sound;
     
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor)
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor, sound: Sound)
     {
-        this.board = board;
+			this.board = board;
+			this.soundPlayer = sound;
     }
 
     Start(state: Array<number>): void 
@@ -59,6 +62,8 @@ export class ActionExecuteState implements GameState
 					for (let e in this.attackedEntities) {
 						let aEntity = this.attackedEntities[e];
 						aEntity.InflictDamage(this.watchedEntity.GetAttackPoints());
+
+						this.soundPlayer.AttackSound();
 					}
 		
 					this.shouldEnd = true;
