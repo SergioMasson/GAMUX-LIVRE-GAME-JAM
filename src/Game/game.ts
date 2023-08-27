@@ -1,6 +1,6 @@
 import * as BABYLON from "@babylonjs/core";
 import { Board } from "./board";
-import { Entity } from "./entity";
+import { Entity, LookDirection } from "./entity";
 import { Cursor } from "./cursor";
 import { GameStateMachine } from "./GameStates/gameStateMachine";
 import { EnvironmentCreator } from "./environmentCreator";
@@ -12,10 +12,6 @@ export class Game
     private board : Board;
     private cursor : Cursor;
     private mainCamera : BABYLON.ArcRotateCamera;
-
-    private playerMesh : BABYLON.AbstractMesh;
-    private enemyMesh: BABYLON.AbstractMesh;
-    private pointerMesh: BABYLON.AbstractMesh;
 
     private players : Array<Entity>;
     private enemies : Array<Entity>;
@@ -47,35 +43,44 @@ export class Game
 
     async Start() : Promise<void> 
     {
-        this.playerMesh = await this.LoadEntity("swordman");
-        this.enemyMesh = await this.LoadEntity("enemy");
-        this.pointerMesh = await this.LoadEntity("pointer");
+        const playerMesh = await this.LoadEntity("swordman", new BABYLON.Vector3(0.5, 0.5, 0.5));
+        const druidGirl = await this.LoadEntity("druidGirl", new BABYLON.Vector3(0.5, 0.5, 0.5));
+        const enemyMesh = await this.LoadEntity("enemy", new BABYLON.Vector3(0.3, 0.3, 0.3));
+        const pointerMesh = await this.LoadEntity("pointer", new BABYLON.Vector3(0.7, 0.7, 0.7));
 
-        this.pointerMesh.isVisible = true;
-        this.pointerMesh.scaling = new BABYLON.Vector3(0.7, 0.7, 0.7);
+        pointerMesh.isVisible = true;
 
-        var player0 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player", 2);
+        var player0 = new Entity(this.board, playerMesh as BABYLON.Mesh, "player", 2);
         player0.SetPosition(1, 0);
 
-        var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player", 2);
-        player1.SetPosition(2, 0);
+        var player1 = new Entity(this.board, druidGirl as BABYLON.Mesh, "player", 2);
+        player1.SetPosition(4, 0);
 
-        var enemy1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "enemy", 4);
-        enemy1.SetPosition(3, 0);
+        const enemy0 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy", 4);
+        enemy0.SetPosition(7, 10);
 
-        this.cursor = new Cursor(this.board, this.scene, this.mainCamera, this.pointerMesh as BABYLON.Mesh);
-        this.scene.debugLayer.show();
+        const enemy1 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy", 4);
+        enemy1.SetPosition(9, 12);
+
+        const enemy2 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy", 4);
+        enemy2.SetPosition(7, 15);
+
+        enemy0.SetLookDirection(LookDirection.X_PLUS);
+        enemy1.SetLookDirection(LookDirection.X_PLUS);
+        enemy2.SetLookDirection(LookDirection.X_PLUS);
+
+        this.cursor = new Cursor(this.board, this.scene, this.mainCamera, pointerMesh as BABYLON.Mesh);
 
         await this.environmentCreator.Populate(this.board, this.scene);
 
         this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera, this.cursor)
     }
 
-    async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>
+    async LoadEntity(entityName: string, scaling: BABYLON.Vector3) : Promise<BABYLON.AbstractMesh>
     {
         const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "./models/", `${entityName}.glb`);
         const result = resultPlayer.meshes[0].getChildMeshes()[0];
-        result.scaling = new BABYLON.Vector3(0.5, 0.5, 0.5);
+        result.scaling = scaling;
         const playerMaterial = new BABYLON.StandardMaterial("");
         result.material = playerMaterial;
         result.isVisible = false;

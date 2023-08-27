@@ -1,6 +1,14 @@
 import { Board } from "./board";
 import * as BABYLON from "@babylonjs/core/";
 
+export enum LookDirection
+{
+    Z_PLUS,
+    Z_MINUS,
+    X_PLUS,
+    X_MINUS
+}
+
 // Base class for players and enemies. 
 export class Entity 
 {
@@ -22,7 +30,6 @@ export class Entity
         this.instanceMesh.metadata = { type: "entity", x: 0, z: 0};
         this.moveRange = 4;
         this.attackRange = 2;
-
         this.transformNode = new BABYLON.TransformNode("CursorRoot");
         this.instanceMesh.setParent(this.transformNode, true);
 
@@ -73,6 +80,28 @@ export class Entity
 
     public animatedMove(x: number, z: number): void {
 
+    }
+
+    public SetLookDirection(forward: LookDirection)
+    {
+        switch(forward)
+        {
+            case LookDirection.X_MINUS:
+                this.instanceMesh.rotation = new BABYLON.Vector3(0, 0, 0);
+                break;
+
+            case LookDirection.X_PLUS:
+                this.instanceMesh.rotation = new BABYLON.Vector3(0, Math.PI, 0);
+                break;
+
+            case LookDirection.Z_MINUS:
+                this.instanceMesh.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+                break;
+
+            case LookDirection.Z_PLUS:
+                this.instanceMesh.rotation = new BABYLON.Vector3(0,  - Math.PI / 2, 0);
+                break;
+        }
     }
 
     public GetBoardPosition() :  BABYLON.Vector2
