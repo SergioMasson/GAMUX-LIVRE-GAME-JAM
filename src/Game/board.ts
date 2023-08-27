@@ -18,12 +18,9 @@ export class Board
     private colorAlpha: number;
     private timer: number;
 
-    private hightligthedCells : Array<BABYLON.Mesh>;
-
     //TO DO: Add logic for creating the cells
     constructor(scene: BABYLON.Scene, width: number, height: number)
     {
-        this.cells = new Array<BABYLON.Mesh>(0);
         this.cells = new Array<BABYLON.Mesh>();
         let left = -((width >> 1) * CELL_WIDTH);
         let top = -((height >> 1) * CELL_DEPTH);
@@ -32,21 +29,21 @@ export class Board
         {
             for (let z = 0; z < height; z++) 
             {
-                const cell = BABYLON.MeshBuilder.CreateBox("box", 
+                const cell = BABYLON.MeshBuilder.CreateBox(`cell_${x}x${z}`, 
                 { 
                     width: CELL_WIDTH, 
                     height: CELL_HEIGHT,
                     depth: CELL_DEPTH
-                    }, scene);
+                }, scene);
                 
                 cell.position = new BABYLON.Vector3(left + x * CELL_WIDTH, 0, top + z * CELL_DEPTH);
                 cell.metadata = {type: "cell", x: x, z: z};
 
                 const cellMaterial = new BABYLON.StandardMaterial("");
                 cell.material = cellMaterial;
-
-                cellMaterial.diffuseColor = (x & 1) ^ (z & 1) ? BABYLON.Color3.Red() : BABYLON.Color3.Green();
-
+                const evenColor = new BABYLON.Color3(0, 1, 0.25);
+                const oddColor = new BABYLON.Color3(0.25, 0.75, 0.25);
+                cellMaterial.diffuseColor = (x & 1) ^ (z & 1) ? evenColor : oddColor;
                 this.cells.push(cell);
             }
         }
