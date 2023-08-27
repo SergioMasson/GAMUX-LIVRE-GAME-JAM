@@ -47,7 +47,6 @@ class App
                     currentLevel++;
                     game.LoadNewLevel(levelsArray[currentLevel]);
                 }
-
             });
         });
     }

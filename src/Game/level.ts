@@ -11,7 +11,7 @@ export class GameLevel
 
     public static async LoadFromJSONAsync(levelName: string, scene: BABYLON.Scene) : Promise<Board>
     {
-        const response = await fetch(`https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/levels/${levelName}.json`);
+        const response = await fetch(`./levels/${levelName}.json`);
         const json = await response.json();
 
         const width = json.boardWidth;
