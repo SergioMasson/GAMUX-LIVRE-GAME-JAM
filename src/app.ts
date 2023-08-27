@@ -5,6 +5,7 @@ import * as BABYLON from "@babylonjs/core";
 import { Game } from "./Game/game";
 
 const levelsArray = ["level0", "level1", "level2"];
+let currentLevel = 0;
 
 class App 
 {
@@ -34,7 +35,7 @@ class App
             engine.resize();
         });
 
-        game.StartLevel(levelsArray[0]).then(function() : void 
+        game.StartLevel(levelsArray[currentLevel]).then(function() : void 
         {
             // run the main render loop
             engine.runRenderLoop(() => 
@@ -43,8 +44,8 @@ class App
                 
                 if(game.ShouldEndGame())
                 {
-                    game.LoadNewLevel(levelsArray[1]);
-                    engine.runRenderLoop(() => {});
+                    currentLevel++;
+                    game.LoadNewLevel(levelsArray[currentLevel]);
                 }
 
             });

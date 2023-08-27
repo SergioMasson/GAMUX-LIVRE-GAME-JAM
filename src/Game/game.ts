@@ -60,7 +60,7 @@ export class Game
 
     async LoadEntity(entityName: string, scaling: BABYLON.Vector3) : Promise<BABYLON.AbstractMesh>
     {
-        const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "./models/", `${entityName}.glb`);
+        const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/models/", `${entityName}.glb`);
         const result = resultPlayer.meshes[0];
         result.scaling = scaling;
         const playerMaterial = new BABYLON.StandardMaterial("");
