@@ -42,10 +42,18 @@ class App
             {
                 game.Update(engine.getDeltaTime() / 1000);
                 
-                if(game.ShouldEndGame())
+                if(game.ShouldEndLevel())
                 {
                     currentLevel++;
-                    game.LoadNewLevel(levelsArray[currentLevel]);
+
+                    if (currentLevel < levelsArray.length) 
+                    {
+                        game.LoadNewLevel(levelsArray[currentLevel]);
+                    }
+                    else
+                    {
+                        game.ShowEndGameScreen();
+                    }
                 }
             });
         });

@@ -1,4 +1,5 @@
 import * as BABYLON from "@babylonjs/core";
+import * as GUI from "@babylonjs/gui";
 import { Board } from "./board";
 import { Cursor } from "./cursor";
 import { GameStateMachine } from "./GameStates/gameStateMachine";
@@ -74,13 +75,28 @@ export class Game
         return result;
     }
 
-    ShouldEndGame() : boolean
+    ShouldEndLevel() : boolean
     {
         if (this.disposed) {
             return false;
         }
 
         return this.gameStateMachine.ShouldEndGame();
+    }
+
+    ShowEndGameScreen(): void
+    {
+        this.scene.dispose();
+        this.scene = null;
+        this.scene = new BABYLON.Scene(this.engine);
+        this.scene.createDefaultCamera();
+        this.cursor = null;
+        this.board = null;
+        this.gameStateMachine = null;
+        this.disposed = true;
+
+        var advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        advancedTexture.parseFromURLAsync("./UI/END_SCREEN.json");
     }
 
     Update(deltaT: number) : void
