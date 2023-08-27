@@ -28,7 +28,7 @@ export class Cursor
       this.animationGroupHigh = new BABYLON.AnimationGroup("Cursor");
       
       this.CreateUpDownAnimation(CURSOR_BASE_HEIGHT, CURSOR_BASE_HEIGHT + 0.5, this.animationGroupLow);
-      this.CreateUpDownAnimation(CURSOR_BASE_HEIGHT + 0.5, CURSOR_BASE_HEIGHT + 1, this.animationGroupHigh);
+      this.CreateUpDownAnimation(CURSOR_BASE_HEIGHT + 1, CURSOR_BASE_HEIGHT + 1.5, this.animationGroupHigh);
 
       this.transformNode = new BABYLON.TransformNode("CursorRoot");
       this.mesh.setParent(this.transformNode, true);

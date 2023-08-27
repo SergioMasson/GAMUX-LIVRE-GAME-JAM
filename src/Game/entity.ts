@@ -9,11 +9,13 @@ export class Entity
     private boardPosition: BABYLON.Vector2;
     private moveRange: number;
     private attackRange: number;
+    private startHealth: number;
+    private health: number;
     private transformNode: BABYLON.TransformNode;
     private animationGroup: BABYLON.AnimationGroup;
     private type: string;
 
-    constructor(board : Board, rootMesh: BABYLON.Mesh, type: string) 
+    constructor(board : Board, rootMesh: BABYLON.Mesh, type: string, maxHealth: number) 
     {
         this.mainBoard = board;
         this.instanceMesh = rootMesh.createInstance("entity");
@@ -29,6 +31,23 @@ export class Entity
             x: 0,
             z: 0
         };
+
+        var plane = BABYLON.MeshBuilder.CreatePlane("plane", {
+            sideOrientation: BABYLON.Mesh.DOUBLESIDE,
+            width: 0.25,
+            height: 0.125
+        });
+        plane.parent = this.transformNode;
+        plane.position.y = 1;
+
+        this.startHealth = maxHealth;
+        this.health = this.startHealth;
+
+        let material = new BABYLON.StandardMaterial("")
+        plane.material = material;
+        material.emissiveColor = new BABYLON.Color3(0.7, 0.2, 0.2);
+        
+        //plane.scaling.x = 0.25;
     }
 
     public CanMove(x: number, z: number) : boolean
