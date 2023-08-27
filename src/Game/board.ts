@@ -174,6 +174,19 @@ export class Board
         
     }
 
+    public FindEntitiesOfType(type: string): Array<Entity> {
+        let returnedEntities = [];
+        for (let e in this.entities) {
+            let entity = this.entities[e];
+
+            if (entity) {
+                if (entity.GetType() === type) returnedEntities.push(entity);
+            }
+        }
+
+        return returnedEntities;
+    }
+
     GetCellCenterPosition(x: number, z: number) : BABYLON.Vector3
     {
         const sceneX = (x * CELL_WIDTH) - (CELL_WIDTH * this.width / 2);

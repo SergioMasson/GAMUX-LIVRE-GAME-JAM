@@ -51,26 +51,26 @@ export class Game
         const druidGirl = await this.LoadEntity("druidGirl", new BABYLON.Vector3(0.5, 0.5, 0.5));
         const enemyMesh = await this.LoadEntity("enemy", new BABYLON.Vector3(0.3, 0.3, 0.3));
         const pointerMesh = await this.LoadEntity("pointer", new BABYLON.Vector3(0.7, 0.7, 0.7));
-        this.shieldMesh = await this.LoadEntity("shield");
+        this.shieldMesh = await this.LoadEntity("shield", new BABYLON.Vector3(0.3, 0.3, 0.3));
 
         pointerMesh.isVisible = true;
 
         var player0 = new Entity(this.board, playerMesh as BABYLON.Mesh, "player", 2, 1, this.shieldMesh as BABYLON.Mesh);
         player0.SetPosition(1, 0);
 
-        var player1 = new Entity(this.board, druidGirl as BABYLON.Mesh, "player", 2);
+        var player1 = new Entity(this.board, druidGirl as BABYLON.Mesh, "player",  2, 1, this.shieldMesh as BABYLON.Mesh);
         player1.SetPosition(4, 0);
 
-        const enemy0 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy", 4);
+        const enemy0 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy",  4, 1, this.shieldMesh as BABYLON.Mesh);
         enemy0.SetPosition(7, 10);
 
-        const enemy1 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy", 4);
+        const enemy1 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy",  4, 1, this.shieldMesh as BABYLON.Mesh);
         enemy1.SetPosition(9, 12);
 
-        const enemy2 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy", 4);
+        const enemy2 = new Entity(this.board, enemyMesh as BABYLON.Mesh, "enemy",  4, 1, this.shieldMesh as BABYLON.Mesh);
         enemy2.SetPosition(7, 15);
 
-        enemy0.SetLookDirection(LookDirection.X_PLUS, 0.5, this.shieldMesh as BABYLON.Mesh);
+        enemy0.SetLookDirection(LookDirection.X_PLUS);
         enemy1.SetLookDirection(LookDirection.X_PLUS);
         enemy2.SetLookDirection(LookDirection.X_PLUS);
 

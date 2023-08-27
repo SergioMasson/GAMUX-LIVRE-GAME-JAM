@@ -1,7 +1,7 @@
-import { GameState } from "./state";
-import { Cursor } from "../cursor";
-import { Board } from "../board";
-import { Entity } from "../entity";
+import { GameState } from "./../state";
+import { Cursor } from "../../cursor";
+import { Board } from "../../board";
+import { Entity } from "../../entity";
 import * as BABYLON from "@babylonjs/core";
 
 export class EntityMoveState implements GameState

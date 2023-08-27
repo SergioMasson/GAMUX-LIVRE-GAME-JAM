@@ -1,5 +1,5 @@
-import { Board } from "../board";
-import { GameState } from "./state";
+import { Board } from "../../board";
+import { GameState } from "./../state";
 import * as BABYLON from "@babylonjs/core";
 
 const FOCUS_SPEED = 2;

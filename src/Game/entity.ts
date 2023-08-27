@@ -43,7 +43,6 @@ export class Entity
         this.blockShield.setParent(this.transformNode, true);
         this.blockShield.position.y = -10000000;
         this.blockShield.rotation = new BABYLON.Vector3(0, 0, 0);
-        this.blockShield.scaling.x = this.blockShield.scaling.y = this.blockShield.scaling.z = 0.3;
 
         this.instanceMesh.metadata = {
             type: type,
