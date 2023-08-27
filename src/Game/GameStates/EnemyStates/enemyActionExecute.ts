@@ -5,7 +5,7 @@ import { Entity } from "../../entity";
 import * as BABYLON from "@babylonjs/core";
 import * as GUI from "@babylonjs/gui";
 
-const FRAME_WAIT = 20;
+const FRAME_WAIT = 10;
 
 export class EnemyActionExecute implements GameState
 {
@@ -15,6 +15,7 @@ export class EnemyActionExecute implements GameState
 		private playersAttacked: Array<Entity>; 
 		private playersBlocking: number;
 		private timer: number;
+		private canAttack: boolean;
     
     constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor)
     {
@@ -26,6 +27,7 @@ export class EnemyActionExecute implements GameState
 			this.playersAttacked = [];
 			this.playersBlocking = 0;
 			this.timer = 0;
+			this.canAttack = false;
 
 			let entity = this.board.GetEntityAtCell(state[2], state[3]);
 			let players = this.board.FindEntitiesOfType("player");
@@ -50,7 +52,6 @@ export class EnemyActionExecute implements GameState
 
 			if (this.playersAttacked.length > 0) {
 				this.shouldEnd = false;
-				this.watchedEntity.PlayAttackAnim();
 			}
 			else this.shouldEnd = true;
     }
@@ -67,16 +68,22 @@ export class EnemyActionExecute implements GameState
 				deltaT -= 1 / 60;
 			}
 
-			if (this.timer > FRAME_WAIT) {
+			if (this.timer > FRAME_WAIT && this.canAttack === false) {
+				this.canAttack = true;
+
+				this.watchedEntity.PlayAttackAnim();
+			}
+
+			if (this.canAttack) {
 				if (this.playersAttacked.length > 0) {
 					if (!this.watchedEntity.IsAnimating()) {
 						for (let e in this.playersAttacked) {
 							let aEntity = this.playersAttacked[e];
-
+	
 							let damagePercent = Math.max(1 - (this.playersBlocking * 0.1), 0.1);
-
+	
 							aEntity.InflictDamage(this.watchedEntity.GetAttackPoints() * damagePercent);
-
+	
 							console.log(damagePercent);
 						}
 			

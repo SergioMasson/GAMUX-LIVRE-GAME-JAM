@@ -29,22 +29,6 @@ class App
         var scene = new BABYLON.Scene(engine);
         var game = new Game(scene, canvas);
 
-        // hide/show the Inspector
-        window.addEventListener("keydown", (ev) => 
-        {
-            // Shift+Ctrl+Alt+I
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) 
-            {
-                if (scene.debugLayer.isVisible()) 
-                {
-                    scene.debugLayer.hide();
-                } else 
-                {
-                    scene.debugLayer.show();
-                }
-            }
-        });
-
         window.addEventListener("resize", () => {
             engine.resize();
         });
