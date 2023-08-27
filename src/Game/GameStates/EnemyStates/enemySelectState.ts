@@ -2,6 +2,7 @@ import { Board } from "../../board";
 import { GameState } from "./../state";
 import { Cursor } from "../../cursor";
 import * as BABYLON from "@babylonjs/core";
+import { Entity } from "../../entity";
 
 export class EnemySelectState implements GameState
 {
@@ -10,7 +11,9 @@ export class EnemySelectState implements GameState
     private shouldEnd: boolean;
     private board: Board;
     private camera: BABYLON.Camera;
-    private cursor: Cursor;
+		private cursor: Cursor;
+	
+		private selectedEnemy: Entity;
 
     constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor) 
     {
@@ -23,13 +26,24 @@ export class EnemySelectState implements GameState
     Start(startSelect: Array<Number>): void
     {
 			this.shouldEnd = false;
-			
-			console.log(this.board.FindEntitiesOfType("enemy"));
+			let enemies = this.board.FindEntitiesOfType("enemy");
+
+			if (enemies.length > 0) {
+				this.selectedEnemy = enemies[Math.round(Math.random() * (enemies.length - 1))];
+				let selectedPos = this.selectedEnemy.GetBoardPosition();
+
+				this.cursor.moveCursorTo(selectedPos.x, selectedPos.y, true);
+				this.cursor.fixCursor();
+				this.shouldEnd = true;
+			}
+			else {
+				this.shouldEnd = false;
+			}
     }
 
     End(): Array<Number> 
     {
-        return [this.cursor.getCursorOverPos().x, this.cursor.getCursorOverPos().y];
+        return [this.selectedEnemy.GetBoardPosition().x, this.selectedEnemy.GetBoardPosition().y];
     }
 
     Update(deltaT : number): void 

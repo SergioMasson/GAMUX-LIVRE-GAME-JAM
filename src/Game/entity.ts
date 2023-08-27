@@ -175,6 +175,7 @@ export class Entity
             this.mainBoard.RemoveEntityFromCell(this.boardPosition.x, this.boardPosition.y);
             this.healthBar.dispose();
             this.instanceMesh.dispose();
+            this.blockShield.dispose();
         }
     }
 }

@@ -70,7 +70,7 @@ export class Board
             material.emissiveColor = new BABYLON.Color3(0.2 + this.colorAlpha / 2, 0.2 + this.colorAlpha / 2, 0.2 + this.colorAlpha / 2);
         }
 
-        for (let t = 0; t < deltaT; t += 1000 / 60) {
+        for (let t = 0; t < deltaT; t += 1 / 60) {
             let halfPeriod = flashingPeriod * 60;
             if (this.timer < halfPeriod) this.colorAlpha = this.timer / halfPeriod;
             else this.colorAlpha = 1 - ((this.timer - halfPeriod) / halfPeriod);

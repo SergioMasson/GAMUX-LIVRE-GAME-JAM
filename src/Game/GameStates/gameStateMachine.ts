@@ -10,6 +10,9 @@ import { ActionSelectState } from "./PlayerStates/actionSelectState";
 import { ActionExecuteState } from "./PlayerStates/actionExecuteState";
 import { CameraMoveToEntityState } from "./PlayerStates/cameraMoveToEntityState";
 import { EnemySelectState } from "./EnemyStates/enemySelectState";
+import { EnemyMoveCamera } from "./EnemyStates/enemyMoveCamera";
+import { EnemySelectCell } from "./EnemyStates/enemySelectCell";
+import { EnemyActionExecute } from "./EnemyStates/enemyActionExecute";
 
 export class GameStateMachine 
 {
@@ -28,6 +31,9 @@ export class GameStateMachine
         this.states.push(new ActionExecuteState(scene, board, camera, cursor));
 
         this.states.push(new EnemySelectState(scene, board, camera, cursor));
+        this.states.push(new EnemyMoveCamera(board, camera as BABYLON.ArcRotateCamera));
+        this.states.push(new EnemySelectCell(scene, board, camera, cursor));
+        this.states.push(new EnemyActionExecute(scene, board, camera, cursor));
 
         this.currentStateIndex = 0;
 
