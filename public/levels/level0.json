@@ -38,7 +38,7 @@
         {
             "x": 6,
             "z": 12,
-            "type": "enemy",
+            "type": "death",
             "attack": 1,
             "health": 4
         },

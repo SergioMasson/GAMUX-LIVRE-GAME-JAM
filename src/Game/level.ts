@@ -29,6 +29,8 @@ export class GameLevel
         meshTable["swordman"] = await this.LoadEntity("swordman", new BABYLON.Vector3(0.5, 0.5, 0.5));
         meshTable["druidGirl"] = await this.LoadEntity("druidGirl", new BABYLON.Vector3(0.5, 0.5, 0.5));
         meshTable["enemy"] = await this.LoadEntity("enemy", new BABYLON.Vector3(0.3, 0.3, 0.3));
+        meshTable["death"] = await this.LoadEntity("death", new BABYLON.Vector3(0.6, 0.6, 0.6));
+
 
         const shieldMesh = await this.LoadEntity("shield", new BABYLON.Vector3(0.3, 0.3, 0.3));
 
