@@ -13,6 +13,7 @@ import { EnemySelectState } from "./EnemyStates/enemySelectState";
 import { EnemyMoveCamera } from "./EnemyStates/enemyMoveCamera";
 import { EnemySelectCell } from "./EnemyStates/enemySelectCell";
 import { EnemyActionExecute } from "./EnemyStates/enemyActionExecute";
+import { CheckGameEndedState } from "./CheckGameEndedState";
 
 export class GameStateMachine 
 {
@@ -30,10 +31,13 @@ export class GameStateMachine
         this.states.push(new ActionSelectState(scene, board, camera, cursor));
         this.states.push(new ActionExecuteState(scene, board, camera, cursor));
 
+        this.states.push(new CheckGameEndedState(board));
+
         this.states.push(new EnemySelectState(scene, board, camera, cursor));
         this.states.push(new EnemyMoveCamera(board, camera as BABYLON.ArcRotateCamera));
         this.states.push(new EnemySelectCell(scene, board, camera, cursor));
         this.states.push(new EnemyActionExecute(scene, board, camera, cursor));
+        this.states.push(new CheckGameEndedState(board));
 
         this.currentStateIndex = 0;
 
@@ -53,15 +57,25 @@ export class GameStateMachine
         }
 
         currentState.Update(deltaT);
-
     }
 
-    GetCurrentState() : GameState
+    ShouldEndGame() : boolean
+    {
+        let currentState = this.GetCurrentState();
+
+        if(!currentState.ShouldEndGame){
+            return false;
+        }
+
+        return currentState.ShouldEndGame();
+    }
+
+    private GetCurrentState() : GameState
     {
         return this.states[this.currentStateIndex];
     }
 
-    MoveToNextState() : GameState 
+    private MoveToNextState() : GameState 
     {
         this.currentStateIndex++;
         this.currentStateIndex = this.currentStateIndex % this.states.length;

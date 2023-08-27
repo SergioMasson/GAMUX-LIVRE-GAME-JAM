@@ -6,38 +6,56 @@ import { GameLevel } from "./level";
 
 export class Game 
 {
+    private engine : BABYLON.Engine;
+    private canvas: HTMLCanvasElement;
+
     private scene : BABYLON.Scene;
     private board : Board;
     private cursor : Cursor;
-    private mainCamera : BABYLON.ArcRotateCamera;
     private gameStateMachine: GameStateMachine;
 
-    constructor(scene: BABYLON.Scene, canvas : HTMLCanvasElement) 
+    private disposed: boolean;
+
+    constructor(engine: BABYLON.Engine, canvas : HTMLCanvasElement) 
     {
-        this.scene = scene;
-        this.mainCamera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), scene);
-        this.mainCamera.attachControl(canvas);
-        this.mainCamera.upperRadiusLimit = 10;
-        this.mainCamera.lowerRadiusLimit = 3;
-        this.mainCamera.upperBetaLimit = Math.PI / 3;
-        this.mainCamera.lowerBetaLimit = Math.PI / 6;
-
-        this.scene.debugLayer.show();
-
-        var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-
-        // Default intensity is 1. Let's dim the light a small amount
-        light.intensity = 0.7;
+        this.engine = engine;
+        this.canvas = canvas;
     }
 
-    async Start() : Promise<void> 
+    async StartLevel(level: string) : Promise<void> 
     {
+        this.scene = new BABYLON.Scene(this.engine);
+        const mainCamera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), this.scene);
+        mainCamera.attachControl(this.canvas);
+        mainCamera.upperRadiusLimit = 10;
+        mainCamera.lowerRadiusLimit = 3;
+        mainCamera.upperBetaLimit = Math.PI / 3;
+        mainCamera.lowerBetaLimit = Math.PI / 6;
+
+        var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this.scene);
+        light.intensity = 0.7;
+
         const pointerMesh = await this.LoadEntity("pointer", new BABYLON.Vector3(0.7, 0.7, 0.7));
         pointerMesh.isVisible = true;
         
-        this.board = await GameLevel.LoadFromJSONAsync("level0", this.scene);
-        this.cursor = new Cursor(this.board, this.scene, this.mainCamera, pointerMesh as BABYLON.Mesh);    
-        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera, this.cursor);
+        this.board = await GameLevel.LoadFromJSONAsync(level, this.scene);
+        this.cursor = new Cursor(this.board, this.scene, mainCamera, pointerMesh as BABYLON.Mesh);    
+        this.gameStateMachine = new GameStateMachine(this.board, this.scene, mainCamera, this.cursor);
+        this.disposed = false;
+    }
+
+    LoadNewLevel(level: string) : void
+    {
+        this.scene.dispose();
+        this.scene = null;
+        this.scene = new BABYLON.Scene(this.engine);
+        this.scene.createDefaultCamera();
+        this.cursor = null;
+        this.board = null;
+        this.gameStateMachine = null;
+        this.disposed = true;
+
+        this.StartLevel(level);
     }
 
     async LoadEntity(entityName: string, scaling: BABYLON.Vector3) : Promise<BABYLON.AbstractMesh>
@@ -53,11 +71,26 @@ export class Game
         return result;
     }
 
+    ShouldEndGame() : boolean
+    {
+        if (this.disposed) {
+            return false;
+        }
+
+        return this.gameStateMachine.ShouldEndGame();
+    }
 
     Update(deltaT: number) : void
     {
+        this.scene.render();
+
+        if (this.disposed) {
+            return;
+        }
+
         this.cursor.Update();
         this.board.update(deltaT);
         this.gameStateMachine.Update(deltaT);
+        
     }
 }
