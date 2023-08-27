@@ -92,24 +92,6 @@ export class Board
         return new BABYLON.Vector3(worldX, 0, worldZ);
     }
 
-    GetBoundsDepth() : BABYLON.Vector2
-    {
-        return new BABYLON.Vector2(-((this.height - 1) * CELL_DEPTH) / 2, ((this.height - 1) * CELL_DEPTH) / 2);
-    }
-
-    GetBoundsWidth() : BABYLON.Vector2
-    {
-        return new BABYLON.Vector2(-((this.width - 1) * CELL_WIDTH) / 2, ((this.width - 1) * CELL_WIDTH) / 2);
-    }
-
-    GetWorldFromBoardSpace(x: number, z: number) : BABYLON.Vector3
-    {
-        const worldX = (x - (this.width / 2)) * CELL_WIDTH;
-        const worldZ = (z - (this.height / 2)) * CELL_DEPTH;
-
-        return new BABYLON.Vector3(worldX, 0, worldZ);
-    }
-
     public FindAround(x: number, z: number, range: number, type: string, returnOccupied: boolean): Array<BABYLON.Mesh> {
         let foundPositions = [];
 
