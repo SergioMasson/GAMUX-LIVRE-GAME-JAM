@@ -6,7 +6,7 @@ import * as BABYLON from "@babylonjs/core";
 import * as GUI from "@babylonjs/gui";
 import { Sound } from "../../sound";
 
-const FRAME_WAIT = 30;
+const FRAME_WAIT = 60;
 
 export class EnemyActionExecute implements GameState
 {
@@ -27,7 +27,6 @@ export class EnemyActionExecute implements GameState
 
     Start(state: Array<number>): void 
 		{
-			this.soundPlayer.Layer3();
 			this.playersAttacked = [];
 			this.playersBlocking = 0;
 			this.timer = 0;

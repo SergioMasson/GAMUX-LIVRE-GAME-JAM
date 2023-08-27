@@ -5,7 +5,7 @@ import * as BABYLON from "@babylonjs/core";
 import { Entity } from "../../entity";
 import { Sound } from "../../sound";
 
-const FRAME_WAIT = 40;
+const FRAME_WAIT = 60;
 
 export class EnemySelectCell implements GameState
 {
@@ -31,7 +31,6 @@ export class EnemySelectCell implements GameState
 
     Start(selectedEntityPos: Array<number>): void 
 		{
-				this.soundPlayer.Layer2();
 				let entity = this.board.GetEntityAtCell(selectedEntityPos[0], selectedEntityPos[1]);
 				let players = this.board.FindEntitiesOfType("player");
 			

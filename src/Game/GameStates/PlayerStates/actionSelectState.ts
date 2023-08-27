@@ -44,7 +44,6 @@ export class ActionSelectState implements GameState
 
     Start(state: Array<number>): void 
     {
-        this.soundPlayer.Layer3();
         let adjacentCells = this.board.FindAround(state[2], state[3], 2, "cell", true);
         let attackedEntities = [];
         this.UI = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
