@@ -54,11 +54,14 @@ export class Game
         this.pointerMesh.isVisible = true;
         this.pointerMesh.scaling = new BABYLON.Vector3(0.7, 0.7, 0.7);
 
-        var player0 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
+        var player0 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player");
         player0.SetPosition(1, 0);
 
-        var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh);
+        var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player");
         player1.SetPosition(2, 0);
+
+        var enemy1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "enemy");
+        enemy1.SetPosition(3, 0);
 
         this.cursor = new Cursor(this.board, this.scene, this.mainCamera, this.pointerMesh as BABYLON.Mesh);
         //this.scene.debugLayer.show();

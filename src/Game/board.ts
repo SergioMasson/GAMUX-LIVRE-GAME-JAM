@@ -18,7 +18,6 @@ export class Board
     private colorAlpha: number;
     private timer: number;
 
-    //TO DO: Add logic for creating the cells
     constructor(scene: BABYLON.Scene, width: number, height: number)
     {
         this.cells = new Array<BABYLON.Mesh>();
@@ -93,8 +92,27 @@ export class Board
         return new BABYLON.Vector3(worldX, 0, worldZ);
     }
 
-    HighlightCells(x: number, z: number, range: number): void
+    GetBoundsDepth() : BABYLON.Vector2
     {
+        return new BABYLON.Vector2(-((this.height - 1) * CELL_DEPTH) / 2, ((this.height - 1) * CELL_DEPTH) / 2);
+    }
+
+    GetBoundsWidth() : BABYLON.Vector2
+    {
+        return new BABYLON.Vector2(-((this.width - 1) * CELL_WIDTH) / 2, ((this.width - 1) * CELL_WIDTH) / 2);
+    }
+
+    GetWorldFromBoardSpace(x: number, z: number) : BABYLON.Vector3
+    {
+        const worldX = (x - (this.width / 2)) * CELL_WIDTH;
+        const worldZ = (z - (this.height / 2)) * CELL_DEPTH;
+
+        return new BABYLON.Vector3(worldX, 0, worldZ);
+    }
+
+    public FindAround(x: number, z: number, range: number, type: string, returnOccupied: boolean): Array<BABYLON.Mesh> {
+        let foundPositions = [];
+
         const tabuleiro = this;
         for (let xp = -range; xp <= range; xp++) {
             for (let zp = -range; zp <= range; zp++) {
@@ -104,8 +122,9 @@ export class Board
                 if (nomr1Dist <= range) {
                     let celula = this.cells.find(function (e) {
                         if (e.metadata) {
-                            if (e.metadata.type === "cell") {
+                            if (e.metadata.type === type) {
                                 if (e.metadata.x === x + xp && e.metadata.z === z + zp) {
+                                    if (returnOccupied) return true;
                                     if(!tabuleiro.GetEntityAtCell(x + xp, z + zp)) return true;
                                 }
                                 else return false;
@@ -115,9 +134,20 @@ export class Board
                         else return false;
                     });
 
-                    if (celula) this.highlightedCells.push(celula);
+                    if (celula) foundPositions.push(celula);
                 }
             }
+        }
+
+        return foundPositions;
+    }
+
+    HighlightCells(x: number, z: number, range: number): void
+    {
+        let highlightPositions = this.FindAround(x, z, range, "cell", false);
+
+        for (let p in highlightPositions) {
+            this.highlightedCells.push(highlightPositions[p]);
         }
     }
 

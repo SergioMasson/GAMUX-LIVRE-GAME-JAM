@@ -27,7 +27,14 @@ export class EntitySelectState implements GameState
         {
             if(pointerInfo.type == BABYLON.PointerEventTypes.POINTERDOWN)
             {
-                if (this.cursor.getCursorOverEntity()) this.shouldEnd = true;
+                if (this.cursor.getCursorOverEntity()) {
+                    let cursorPos = this.cursor.getCursorOverPos();
+                    let entity = this.board.GetEntityAtCell(cursorPos.x, cursorPos.y);
+
+                    if (entity) {
+                        if(entity.GetType() === "player") this.shouldEnd = true;
+                    }
+                }
             }
         });
 
