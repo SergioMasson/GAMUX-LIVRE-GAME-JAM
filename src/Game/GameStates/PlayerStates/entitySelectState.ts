@@ -25,6 +25,7 @@ export class EntitySelectState implements GameState
 
     Start(startSelect: Array<Number>): void
     {
+        this.soundPlayer.Layer1();
         console.log("Starting  EntitySelectState");
         this.onClickObservable = this.scene.onPointerObservable.add((pointerInfo) => 
         {

@@ -29,6 +29,7 @@ export class EnemySelectState implements GameState
 
     Start(startSelect: Array<Number>): void
     {
+        this.soundPlayer.Layer1();
 			this.shouldEnd = false;
 			let enemies = this.board.FindEntitiesOfType("enemy");
 

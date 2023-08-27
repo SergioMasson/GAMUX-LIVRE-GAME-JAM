@@ -3,6 +3,7 @@ import { Board } from "../../board";
 import { Cursor } from "../../cursor";
 import * as BABYLON from "@babylonjs/core";
 import * as GUI from "@babylonjs/gui";
+import { Sound } from "../../sound";
 
 export class ActionSelectState implements GameState
 {
@@ -10,10 +11,12 @@ export class ActionSelectState implements GameState
     private UI: GUI.AdvancedDynamicTexture;
     private shouldEnd: boolean;
     private gameState: Array<number>;
+    private soundPlayer: Sound;
     
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor)
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor, sound: Sound)
     {
         this.board = board;
+        this.soundPlayer = sound;
     }
 
     createButton(texto: string, left: number, top: number, actionState: ActionSelectState): GUI.Button {
@@ -41,6 +44,7 @@ export class ActionSelectState implements GameState
 
     Start(state: Array<number>): void 
     {
+        this.soundPlayer.Layer3();
         let adjacentCells = this.board.FindAround(state[2], state[3], 2, "cell", true);
         let attackedEntities = [];
         this.UI = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");

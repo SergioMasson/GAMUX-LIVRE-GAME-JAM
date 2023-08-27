@@ -2,6 +2,7 @@ import { GameState } from "./../state";
 import { Board } from "../../board";
 import { Cursor } from "../../cursor";
 import * as BABYLON from "@babylonjs/core";
+import { Sound } from "../../sound";
 
 export class CellSelectState implements GameState
 {
@@ -11,15 +12,18 @@ export class CellSelectState implements GameState
     private shouldEnd: boolean;
     private onClickObservable: BABYLON.Observer<BABYLON.PointerInfo>;
     private nextStateInfo: Array<Number>;
+    private soundPlayer: Sound;
 
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor) {
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor, sound: Sound) {
         this.board = board;
         this.scene = scene;
         this.cursor = cursor;
+        this.soundPlayer = sound;
     }
 
     Start(selectedEntityPos: Array<number>): void 
     {
+        this.soundPlayer.Layer2();
         let entity = this.board.GetEntityAtCell(selectedEntityPos[0], selectedEntityPos[1]);
         if (entity) {
             this.board.HighlightCells(selectedEntityPos[0], selectedEntityPos[1], entity.GetRange());
