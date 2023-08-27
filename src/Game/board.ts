@@ -44,8 +44,9 @@ export class Board
 
                 const cellMaterial = new BABYLON.StandardMaterial("");
                 cell.material = cellMaterial;
-
-                cellMaterial.diffuseColor = (x & 1) ^ (z & 1) ? BABYLON.Color3.Red() : BABYLON.Color3.Green();
+                const evenColor = new BABYLON.Color3(0, 1, 0.25);
+                const oddColor = new BABYLON.Color3(0.25, 0.75, 0.25);
+                cellMaterial.diffuseColor = (x & 1) ^ (z & 1) ? evenColor : oddColor;
 
                 this.cells.push(cell);
             }
