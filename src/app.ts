@@ -9,10 +9,19 @@ class App
     constructor() 
     {
         // create the canvas html element and attach it to the webpage
-        var canvas = document.createElement("canvas");
+        document.body.style.position = "fixed";
+        document.body.style.width = "100%";
+        document.body.style.height = "100%";
+        document.body.style.margin = "0";
+        document.body.style.padding = "0";
+        document.body.style.overflow = "hidden";
+        const canvas = document.createElement("canvas");
+        canvas.id = "gameCanvas";
+        canvas.style.border = "0";
+        canvas.style.outline = "0";
         canvas.style.width = "100%";
         canvas.style.height = "100%";
-        canvas.id = "gameCanvas";
+        canvas.oncontextmenu = () => false;
         document.body.appendChild(canvas);
 
         // initialize babylon scene and engine
@@ -34,6 +43,10 @@ class App
                     scene.debugLayer.show();
                 }
             }
+        });
+
+        window.addEventListener("resize", () => {
+            engine.resize();
         });
 
         game.Start().then(function() : void 
