@@ -8,18 +8,27 @@ export class Entity
     private instanceMesh: BABYLON.InstancedMesh;
     private boardPosition: BABYLON.Vector2;
     private moveRange: number;
+    private attackRange: number;
     private transformNode: BABYLON.TransformNode;
     private animationGroup: BABYLON.AnimationGroup;
+    private type: string;
 
-    constructor(board : Board, rootMesh: BABYLON.Mesh) 
+    constructor(board : Board, rootMesh: BABYLON.Mesh, type: string) 
     {
         this.mainBoard = board;
         this.instanceMesh = rootMesh.createInstance("entity");
         this.instanceMesh.metadata = { type: "entity", x: 0, z: 0};
         this.moveRange = 4;
+        this.attackRange = 2;
 
         this.transformNode = new BABYLON.TransformNode("CursorRoot");
         this.instanceMesh.setParent(this.transformNode, true);
+
+        this.instanceMesh.metadata = {
+            type: type,
+            x: 0,
+            z: 0
+        };
     }
 
     public CanMove(x: number, z: number) : boolean
@@ -39,7 +48,8 @@ export class Entity
 
         this.transformNode.setAbsolutePosition(position);
         this.boardPosition = new BABYLON.Vector2(x, z);
-        this.instanceMesh.metadata = { type: "entity", x: this.boardPosition.x, z: this.boardPosition.y};
+        this.instanceMesh.metadata.x = this.boardPosition.x;
+        this.instanceMesh.metadata.z = this.boardPosition.y;
     }
 
     public animatedMove(x: number, z: number): void {
@@ -53,5 +63,13 @@ export class Entity
 
     public GetRange() : number {
         return this.moveRange;
+    }
+
+    public GetAttackRange(): number {
+        return this.attackRange;
+    }
+
+    public GetType(): string {
+        return this.instanceMesh.metadata.type;
     }
 }

@@ -118,7 +118,7 @@ export class Cursor
           let metadataResultante = pickResult.pickedMesh.metadata;
           let supostaEntity = this.board.GetEntityAtCell(metadataResultante.x, metadataResultante.z);
 
-          if ((typeof(supostaEntity) === "object" && supostaEntity != undefined && supostaEntity != null) || metadataResultante.type === "entity") {
+          if ((typeof(supostaEntity) === "object" && supostaEntity != undefined && supostaEntity != null) || metadataResultante.type != "cell") {
             if (!this.fixed) {
               this.animationGroupLow.stop();
               this.animationGroupHigh.play(true);

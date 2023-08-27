@@ -2,7 +2,7 @@ import { GameState } from "./state";
 import { EntitySelectState } from "./entitySelectState";
 import { CellSelectState } from "./cellSelectState";
 import { EntityMoveState } from "./entityMoveState";
-//import { ActionSelectState } from "./actionSelectState";
+import { ActionSelectState } from "./actionSelectState";
 import { Board } from "../board";
 import { Cursor } from "../cursor";
 import * as BABYLON from "@babylonjs/core";
@@ -11,6 +11,7 @@ export class GameStateMachine
 {
     states: Array<GameState>;
     currentStateIndex: number;
+    isEnemyTurn: Boolean;
 
     constructor(board: Board, scene: BABYLON.Scene, camera: BABYLON.Camera, cursor: Cursor)
     {
@@ -18,7 +19,7 @@ export class GameStateMachine
         this.states.push(new EntitySelectState(scene, board, camera, cursor));
         this.states.push(new CellSelectState(scene, board, camera, cursor));
         this.states.push(new EntityMoveState(scene, board, camera, cursor));
-        //this.states.push(new ActionSelectState);
+        this.states.push(new ActionSelectState(scene, board, camera, cursor));
         this.currentStateIndex = 0;
 
         let currentState = this.GetCurrentState();
@@ -33,7 +34,7 @@ export class GameStateMachine
         {
             let selectData = currentState.End();
             currentState = this.MoveToNextState();
-            currentState.Start(selectData);
+            currentState.Start(selectData);    
         }
 
         currentState.Update(deltaT);

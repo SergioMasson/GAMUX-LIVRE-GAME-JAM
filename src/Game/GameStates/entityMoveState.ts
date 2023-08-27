@@ -11,6 +11,7 @@ export class EntityMoveState implements GameState
     private cursor: Cursor;
     private shouldEnd: boolean;
     private movedEntity: Entity;
+    private stateData: Array<number>;
 
     constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor) {
         this.board = board;
@@ -22,10 +23,13 @@ export class EntityMoveState implements GameState
     {
         let entity = this.board.GetEntityAtCell(selectedCellPos[0], selectedCellPos[1]);
         if (entity) {
-            this.movedEntity = entity;
-            entity.SetPosition(selectedCellPos[2], selectedCellPos[3]);
-            this.cursor.unfixCursor();
-            this.shouldEnd = true;
+            if (entity.GetType() === "player") {
+                this.movedEntity = entity;
+                entity.SetPosition(selectedCellPos[2], selectedCellPos[3]);
+                this.cursor.unfixCursor();
+                this.shouldEnd = true;
+                this.stateData = selectedCellPos;
+            }
         }
         else this.shouldEnd = false;
     }
@@ -33,7 +37,7 @@ export class EntityMoveState implements GameState
     End(): Array<Number> 
     {
         console.log("Ending entityMoveState");
-        return [0];
+        return this.stateData;
     }
 
     Update(deltaT : number): void 
