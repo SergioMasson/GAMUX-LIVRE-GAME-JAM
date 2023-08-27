@@ -19,10 +19,11 @@ export class Sound
 		
 		let layersReady = 0;
 
-		this.layer1 = new BABYLON.Sound("layer1", "./songs/layer1.wav", scene, soundReady, { loop: true, autoplay: false });
-		this.layer2 = new BABYLON.Sound("layer2", "./songs/layer2.wav", scene, soundReady, { loop: true, autoplay: false });
-		this.layer3 = new BABYLON.Sound("layer3", "./songs/layer3.wav", scene, soundReady, { loop: true, autoplay: false });
+		this.layer1 = new BABYLON.Sound("layer1", "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/songs/layer1.wav", scene, soundReady, { loop: true, autoplay: false });
+		this.layer2 = new BABYLON.Sound("layer2", "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/songs/layer2.wav", scene, soundReady, { loop: true, autoplay: false });
+		this.layer3 = new BABYLON.Sound("layer3", "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/songs/layer3.wav", scene, soundReady, { loop: true, autoplay: false });
 
+		this.layer1.setVolume(2);
 		this.layer2.setVolume(0);
 		this.layer3.setVolume(0);
 		
@@ -42,21 +43,21 @@ export class Sound
 	}
 
 	public Layer1(): void {
-		this.layer1.setVolume(1);
+		this.layer1.setVolume(2);
 		this.layer2.setVolume(0);
 		this.layer3.setVolume(0);
 	}
 
 	public Layer2(): void {
-		this.layer1.setVolume(1);
-		this.layer2.setVolume(1);
+		this.layer1.setVolume(2);
+		this.layer2.setVolume(2);
 		this.layer3.setVolume(0);
 	}
 
 	public Layer3(): void {
-		this.layer1.setVolume(1);
-		this.layer2.setVolume(1);
-		this.layer3.setVolume(1);
+		this.layer1.setVolume(2);
+		this.layer2.setVolume(2);
+		this.layer3.setVolume(2);
 	}
 
 	public AttackSound(): void {
