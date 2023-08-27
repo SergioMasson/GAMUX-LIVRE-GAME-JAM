@@ -60,7 +60,7 @@
             "range": 2
         },
         {
-            "x": 12,
+            "x": 15,
             "z": 18,
             "type": "death",
             "attack": 1,
@@ -69,8 +69,8 @@
             "range": 2
         },
         {
-            "x": 7,
-            "z": 11,
+            "x": 17,
+            "z": 18,
             "type": "enemy",
             "attack": 1,
             "health": 4,
@@ -78,8 +78,8 @@
             "range": 2
         },
         {
-            "x": 8,
-            "z": 12,
+            "x": 19,
+            "z": 19,
             "type": "enemy",
             "attack": 1,
             "health": 4,

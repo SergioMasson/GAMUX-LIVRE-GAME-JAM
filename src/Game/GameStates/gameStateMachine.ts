@@ -31,11 +31,13 @@ export class GameStateMachine
         this.states.push(new EntityMoveState(scene, board, camera, cursor, sound));
         this.states.push(new ActionSelectState(scene, board, camera, cursor));
         this.states.push(new ActionExecuteState(scene, board, camera, cursor, sound));
-
+        this.states.push(new CheckGameEndedState(board));
+        
         this.states.push(new EnemySelectState(scene, board, camera, cursor, sound));
         this.states.push(new EnemyMoveCamera(board, camera as BABYLON.ArcRotateCamera));
         this.states.push(new EnemySelectCell(scene, board, camera, cursor, sound));
         this.states.push(new EnemyActionExecute(scene, board, camera, cursor, sound));
+        this.states.push(new CheckGameEndedState(board));
 
         this.currentStateIndex = 0;
 
