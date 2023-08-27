@@ -96,8 +96,7 @@ export class Game
         this.disposed = true;
 
         var advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-        advancedTexture.parseFromURLAsync("./UI/END_SCREEN.json");
-
+        advancedTexture.parseFromURLAsync("https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/UI/END_SCREEN.json");
         this.sound.MuteMusic();
     }
 
