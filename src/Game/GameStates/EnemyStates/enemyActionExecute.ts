@@ -4,6 +4,7 @@ import { Cursor } from "../../cursor";
 import { Entity } from "../../entity";
 import * as BABYLON from "@babylonjs/core";
 import * as GUI from "@babylonjs/gui";
+import { Sound } from "../../sound";
 
 const FRAME_WAIT = 10;
 
@@ -16,10 +17,12 @@ export class EnemyActionExecute implements GameState
 		private playersBlocking: number;
 		private timer: number;
 		private canAttack: boolean;
+		private soundPlayer: Sound;
     
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor)
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor, sound: Sound)
     {
-        this.board = board;
+			this.board = board;
+			this.soundPlayer = sound;
     }
 
     Start(state: Array<number>): void 
@@ -83,6 +86,8 @@ export class EnemyActionExecute implements GameState
 							let damagePercent = Math.max(1 - (this.playersBlocking * 0.1), 0.1);
 	
 							aEntity.InflictDamage(this.watchedEntity.GetAttackPoints() * damagePercent);
+
+							this.soundPlayer.AttackSound();
 	
 							console.log(damagePercent);
 						}

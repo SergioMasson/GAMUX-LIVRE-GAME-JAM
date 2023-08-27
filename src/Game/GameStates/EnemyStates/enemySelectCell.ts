@@ -3,6 +3,7 @@ import { Board } from "../../board";
 import { Cursor } from "../../cursor";
 import * as BABYLON from "@babylonjs/core";
 import { Entity } from "../../entity";
+import { Sound } from "../../sound";
 
 const FRAME_WAIT = 30;
 
@@ -17,11 +18,15 @@ export class EnemySelectCell implements GameState
 	
 		private selectedEntity: Entity;
 		private movePos: BABYLON.Vector2;
+	
+		private soundPlayer: Sound;
 
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor) {
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor, sound: Sound) {
         this.board = board;
         this.scene = scene;
 				this.cursor = cursor;
+			
+				this.soundPlayer = sound;
     }
 
     Start(selectedEntityPos: Array<number>): void 
@@ -84,6 +89,7 @@ export class EnemySelectCell implements GameState
 
 			if (this.timer > FRAME_WAIT) {
 				this.shouldEnd = true;
+				this.soundPlayer.MoveSound();
 			}
     }
 

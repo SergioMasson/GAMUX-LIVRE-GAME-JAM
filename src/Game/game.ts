@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { Cursor } from "./cursor";
 import { GameStateMachine } from "./GameStates/gameStateMachine";
 import { GameLevel } from "./level";
+import { Sound } from "./sound";
 
 export class Game 
 {
@@ -13,6 +14,7 @@ export class Game
     private board : Board;
     private cursor : Cursor;
     private gameStateMachine: GameStateMachine;
+    private sound: Sound;
 
     private disposed: boolean;
 
@@ -25,6 +27,7 @@ export class Game
     async StartLevel(level: string) : Promise<void> 
     {
         this.scene = new BABYLON.Scene(this.engine);
+        this.sound = new Sound(this.scene);
         const mainCamera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), this.scene);
         mainCamera.attachControl(this.canvas);
         mainCamera.upperRadiusLimit = 10;
@@ -40,7 +43,7 @@ export class Game
         
         this.board = await GameLevel.LoadFromJSONAsync(level, this.scene);
         this.cursor = new Cursor(this.board, this.scene, mainCamera, pointerMesh as BABYLON.Mesh);    
-        this.gameStateMachine = new GameStateMachine(this.board, this.scene, mainCamera, this.cursor);
+        this.gameStateMachine = new GameStateMachine(this.board, this.scene, mainCamera, this.cursor, this.sound);
         this.disposed = false;
     }
 

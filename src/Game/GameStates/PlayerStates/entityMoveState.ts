@@ -3,6 +3,7 @@ import { Cursor } from "../../cursor";
 import { Board } from "../../board";
 import { Entity } from "../../entity";
 import * as BABYLON from "@babylonjs/core";
+import { Sound } from "../../sound";
 
 export class EntityMoveState implements GameState
 {
@@ -12,11 +13,13 @@ export class EntityMoveState implements GameState
     private shouldEnd: boolean;
     private movedEntity: Entity;
     private stateData: Array<number>;
+    private soundPlayer: Sound;
 
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor) {
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor, sound: Sound) {
         this.board = board;
         this.scene = scene;
         this.cursor = cursor;
+        this.soundPlayer = sound;
     }
 
     Start(selectedCellPos: Array<number>): void 
@@ -29,6 +32,7 @@ export class EntityMoveState implements GameState
                 this.cursor.unfixCursor();
                 this.shouldEnd = true;
                 this.stateData = selectedCellPos;
+                this.soundPlayer.MoveSound();
             }
         }
         else this.shouldEnd = false;

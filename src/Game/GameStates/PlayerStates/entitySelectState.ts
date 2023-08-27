@@ -2,6 +2,7 @@ import { Board } from "../../board";
 import { GameState } from "./../state";
 import { Cursor } from "../../cursor";
 import * as BABYLON from "@babylonjs/core";
+import { Sound } from "../../sound";
 
 export class EntitySelectState implements GameState
 {
@@ -11,13 +12,15 @@ export class EntitySelectState implements GameState
     private board: Board;
     private camera: BABYLON.Camera;
     private cursor: Cursor;
+    private soundPlayer: Sound;
 
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor) 
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor, sound: Sound) 
     {
         this.scene = scene;
         this.board = board;
         this.camera = camera;
         this.cursor = cursor;
+        this.soundPlayer = sound;
     }
 
     Start(startSelect: Array<Number>): void
@@ -35,6 +38,7 @@ export class EntitySelectState implements GameState
                         if (entity.GetType() === "player") {
                             this.shouldEnd = true;
                             entity.Unblock();
+                            this.soundPlayer.SelectSound();
                         }
                     }
                 }
