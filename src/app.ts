@@ -4,6 +4,9 @@ import "@babylonjs/loaders/glTF";
 import * as BABYLON from "@babylonjs/core";
 import { Game } from "./Game/game";
 
+const levelsArray = ["level0", "level1", "level2"];
+let currentLevel = 0;
+
 class App 
 {
     constructor() 
@@ -26,22 +29,25 @@ class App
 
         // initialize babylon scene and engine
         var engine = new BABYLON.Engine(canvas, true);
-        var scene = new BABYLON.Scene(engine);
-        var game = new Game(scene, canvas);
+        var game = new Game(engine, canvas);
 
         window.addEventListener("resize", () => {
             engine.resize();
         });
 
-        game.Start().then(function() : void 
+        game.StartLevel(levelsArray[currentLevel]).then(function() : void 
         {
-            console.log("Starting rendering loop");
-
             // run the main render loop
             engine.runRenderLoop(() => 
             {
                 game.Update(engine.getDeltaTime() / 1000);
-                scene.render();
+                
+                if(game.ShouldEndGame())
+                {
+                    currentLevel++;
+                    game.LoadNewLevel(levelsArray[currentLevel]);
+                }
+
             });
         });
     }

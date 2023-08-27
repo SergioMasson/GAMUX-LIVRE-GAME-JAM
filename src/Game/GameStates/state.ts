@@ -4,4 +4,5 @@ export interface GameState
     End(): Array<Number>;
     Update(deltaT : number): void;
     ShouldEnd(): boolean;
+    ShouldEndGame?(): boolean;
 }

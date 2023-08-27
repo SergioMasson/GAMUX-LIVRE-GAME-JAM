@@ -11,7 +11,7 @@ export class GameLevel
 
     public static async LoadFromJSONAsync(levelName: string, scene: BABYLON.Scene) : Promise<Board>
     {
-        const response = await fetch(`./levels/${levelName}.json`);
+        const response = await fetch(`https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/levels/${levelName}.json`);
         const json = await response.json();
 
         const width = json.boardWidth;
@@ -87,14 +87,14 @@ export class GameLevel
 
     static async LoadEntity(entityName: string, scaling: BABYLON.Vector3) : Promise<BABYLON.AbstractMesh>
     {
-        const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "./models/", `${entityName}.glb`);
+        const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "", `https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/models/${entityName}.glb`);
         const result = resultPlayer.meshes[0].getChildMeshes()[0];
         result.scaling = scaling;
         const playerMaterial = new BABYLON.StandardMaterial("");
         result.material = playerMaterial;
         result.isVisible = false;
 
-        playerMaterial.diffuseTexture = new BABYLON.Texture(`./textures/player.png`);
+        playerMaterial.diffuseTexture = new BABYLON.Texture(`https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/textures/player.png`);
         return result;
     }
 }

@@ -13,6 +13,7 @@ import { EnemySelectState } from "./EnemyStates/enemySelectState";
 import { EnemyMoveCamera } from "./EnemyStates/enemyMoveCamera";
 import { EnemySelectCell } from "./EnemyStates/enemySelectCell";
 import { EnemyActionExecute } from "./EnemyStates/enemyActionExecute";
+import { CheckGameEndedState } from "./CheckGameEndedState";
 import { Sound } from "../sound";
 
 export class GameStateMachine 
@@ -54,15 +55,25 @@ export class GameStateMachine
         }
 
         currentState.Update(deltaT);
-
     }
 
-    GetCurrentState() : GameState
+    ShouldEndGame() : boolean
+    {
+        let currentState = this.GetCurrentState();
+
+        if(!currentState.ShouldEndGame){
+            return false;
+        }
+
+        return currentState.ShouldEndGame();
+    }
+
+    private GetCurrentState() : GameState
     {
         return this.states[this.currentStateIndex];
     }
 
-    MoveToNextState() : GameState 
+    private MoveToNextState() : GameState 
     {
         this.currentStateIndex++;
         this.currentStateIndex = this.currentStateIndex % this.states.length;
