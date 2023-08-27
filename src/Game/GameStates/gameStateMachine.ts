@@ -2,8 +2,9 @@ import { GameState } from "./state";
 import { EntitySelectState } from "./entitySelectState";
 import { CellSelectState } from "./cellSelectState";
 import { EntityMoveState } from "./entityMoveState";
-import { ActionSelectState } from "./actionSelectState";
+//import { ActionSelectState } from "./actionSelectState";
 import { Board } from "../board";
+import { Cursor } from "../cursor";
 import * as BABYLON from "@babylonjs/core";
 
 export class GameStateMachine 
@@ -11,17 +12,17 @@ export class GameStateMachine
     states: Array<GameState>;
     currentStateIndex: number;
 
-    constructor(board: Board, scene: BABYLON.Scene, camera: BABYLON.Camera)
+    constructor(board: Board, scene: BABYLON.Scene, camera: BABYLON.Camera, cursor: Cursor)
     {
         this.states = new Array<GameState>();
-        this.states.push(new EntitySelectState(scene, board, camera));
-        this.states.push(new CellSelectState());
-        this.states.push(new EntityMoveState);
-        this.states.push(new ActionSelectState);
+        this.states.push(new EntitySelectState(scene, board, camera, cursor));
+        this.states.push(new CellSelectState(scene, board, camera, cursor));
+        this.states.push(new EntityMoveState(scene, board, camera, cursor));
+        //this.states.push(new ActionSelectState);
         this.currentStateIndex = 0;
 
         let currentState = this.GetCurrentState();
-        currentState.Start()
+        currentState.Start([]);
     }
 
     Update(deltaT : number) : void
@@ -30,9 +31,9 @@ export class GameStateMachine
 
         if(currentState.ShouldEnd())
         {
-            currentState.End();
+            let selectData = currentState.End();
             currentState = this.MoveToNextState();
-            currentState.Start();
+            currentState.Start(selectData);
         }
 
         currentState.Update(deltaT);

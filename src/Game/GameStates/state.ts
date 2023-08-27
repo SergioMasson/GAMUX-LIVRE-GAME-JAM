@@ -1,7 +1,7 @@
 export interface GameState
 {
-    Start(): void;
-    End(): void;
+    Start(state: Array<Number>): void;
+    End(): Array<Number>;
     Update(deltaT : number): void;
     ShouldEnd(): boolean;
 }

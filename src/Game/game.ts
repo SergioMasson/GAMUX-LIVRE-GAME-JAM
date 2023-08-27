@@ -40,10 +40,6 @@ export class Game
         light.intensity = 0.7;
 
         const game = this;
-
-        scene.onPointerDown = function castRay() {
-            game.board.UnHighlightCells();
-        }
     }
 
     async Start() : Promise<void> 
@@ -64,8 +60,7 @@ export class Game
         this.cursor = new Cursor(this.board, this.scene, this.mainCamera, this.pointerMesh as BABYLON.Mesh);
         //this.scene.debugLayer.show();
 
-        this.board.HighlightCells(0, 0, 4);
-        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera)
+        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera, this.cursor)
     }
 
     async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>

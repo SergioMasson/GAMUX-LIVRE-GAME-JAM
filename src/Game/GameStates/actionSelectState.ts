@@ -7,13 +7,13 @@ export class ActionSelectState implements GameState
 
     }
 
-    Start(): void 
+    Start(state: Array<Number>): void 
     {
     }
 
-    End(): void 
+    End(): Array<Number> 
     {
-        
+        return [0];
     }
 
     Update(deltaT : number): void 

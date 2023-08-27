@@ -1,5 +1,6 @@
 import { Board } from "../board";
 import { GameState } from "./state";
+import { Cursor } from "../cursor";
 import * as BABYLON from "@babylonjs/core";
 
 export class EntitySelectState implements GameState
@@ -9,56 +10,36 @@ export class EntitySelectState implements GameState
     private shouldEnd: boolean;
     private board: Board;
     private camera: BABYLON.Camera;
+    private cursor: Cursor;
 
-    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera) 
+    constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor) 
     {
         this.scene = scene;
         this.board = board;
         this.camera = camera;
+        this.cursor = cursor;
     }
 
-    Start(): void 
+    Start(startSelect: Array<Number>): void
     {
         console.log("Starting  EntitySelectState");
         this.onClickObservable = this.scene.onPointerObservable.add((pointerInfo) => 
         {
             if(pointerInfo.type == BABYLON.PointerEventTypes.POINTERDOWN)
             {
-                console.log("Pointer down");
-
-                var ray = this.scene.createPickingRay(this.scene.pointerX, this.scene.pointerY, BABYLON.Matrix.Identity(), this.camera, false);	
-                var hit = this.scene.pickWithRay(ray);
-    
-                if (hit.pickedMesh) 
-                {
-                    if (hit.pickedMesh.metadata) 
-                    {
-                        if (hit.pickedMesh.metadata.type === "cell") 
-                        {
-                            const entity = this.board.GetEntityAtCell(hit.pickedMesh.metadata.x, hit.pickedMesh.metadata.z);
-                            
-                            if (entity != undefined) 
-                            {
-                                console.log("Entity selected!");
-                                this.shouldEnd = true;
-                            }
-                            else
-                            {
-                                console.log("No mesh found on the cell.");
-                            }
-                        }
-                    }
-                }
+                if (this.cursor.getCursorOverEntity()) this.shouldEnd = true;
             }
         });
 
         this.shouldEnd = false;
     }
 
-    End(): void 
+    End(): Array<Number> 
     {
         console.log("Ending  EntitySelectState");
         this.scene.onPointerObservable.remove(this.onClickObservable);
+        this.cursor.fixCursor();
+        return [this.cursor.getCursorOverPos().x, this.cursor.getCursorOverPos().y];
     }
 
     Update(deltaT : number): void 

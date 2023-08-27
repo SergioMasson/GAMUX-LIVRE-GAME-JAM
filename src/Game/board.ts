@@ -80,6 +80,7 @@ export class Board
 
     HighlightCells(x: number, z: number, range: number): void
     {
+        const tabuleiro = this;
         for (let xp = -range; xp <= range; xp++) {
             for (let zp = -range; zp <= range; zp++) {
                 if (xp === 0 && zp === 0) continue;
@@ -90,7 +91,7 @@ export class Board
                         if (e.metadata) {
                             if (e.metadata.type === "cell") {
                                 if (e.metadata.x === x + xp && e.metadata.z === z + zp) {
-                                    return true;
+                                    if(!tabuleiro.GetEntityAtCell(x + xp, z + zp)) return true;
                                 }
                                 else return false;
                             }
@@ -116,6 +117,25 @@ export class Board
         this.highlightedCells = [];
     }
 
+    isCellHighlighted(x: number, z: number): boolean {
+        const tabuleiro = this;
+        let celula = this.highlightedCells.find(function (e) {
+            if (e.metadata) {
+                if (e.metadata.type === "cell") {
+                    if (e.metadata.x === x && e.metadata.z === z) {
+                        return true;
+                    }
+                    else return false;
+                }
+                else return false;
+            }
+            else return false;
+        }); 
+
+        if (celula) return true;
+        else return false;
+    }
+
     SelectCell(width: number, height: number) : void
     {
         
@@ -139,6 +159,11 @@ export class Board
         this.entities[x + (this.width * z)] = entity;
     }
 
+    RemoveEntityFromCell(x: number, z: number): void
+    {
+        this.entities[x + (this.width * z)] = null;
+    }
+
     FitPositionToCell(position: BABYLON.Vector3) : BABYLON.Vector3 
     {
         var bestFit = new BABYLON.Vector3(0, 0, 0);
@@ -153,27 +178,9 @@ export class Board
                 lastDistance = distance.length();
                 bestFit = element.position;
             }
+            
         }
 
         return bestFit;
-    }
-
-    TrySelectEntityAtWorldPosition(worldPoint: BABYLON.Vector3) : Entity | undefined
-    {
-        var selectedIndex = 0;
-        var lastDistance = 1000000;
-
-        for (let index = 0; index < this.cells.length; index++) {
-            const element = this.cells[index];
-            const distance = element.position.subtract(worldPoint);
-            
-            if(distance.length() < lastDistance)
-            {
-                lastDistance = distance.length();
-                selectedIndex = index;
-            }
-        }
-
-        return this.entities[selectedIndex];
     }
 }
