@@ -85,6 +85,14 @@ export class Board
         return new BABYLON.Vector2(-((this.width - 1) * CELL_WIDTH) / 2, ((this.width - 1) * CELL_WIDTH) / 2);
     }
 
+    GetWorldFromBoardSpace(x: number, z: number) : BABYLON.Vector3
+    {
+        const worldX = (x - (this.width / 2)) * CELL_WIDTH;
+        const worldZ = (z - (this.height / 2)) * CELL_DEPTH;
+
+        return new BABYLON.Vector3(worldX, 0, worldZ);
+    }
+
     HighlightCells(x: number, z: number, range: number): void
     {
         const tabuleiro = this;

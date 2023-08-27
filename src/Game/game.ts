@@ -11,7 +11,7 @@ export class Game
     private canvas : HTMLCanvasElement;
     private board : Board;
     private cursor : Cursor;
-    private mainCamera : BABYLON.FreeCamera;
+    private mainCamera : BABYLON.ArcRotateCamera;
 
     private playerMesh : BABYLON.AbstractMesh;
     private enemyMesh: BABYLON.AbstractMesh;
@@ -32,13 +32,12 @@ export class Game
         this.board = new Board(scene, 30, 30);
         this.environmentCreator = new EnvironmentCreator();
 
-        let camera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), scene);
-        camera.attachControl(canvas);
-        camera.upperRadiusLimit = 10;
-        camera.lowerRadiusLimit = 3;
-        camera.upperBetaLimit = Math.PI / 3;
-        camera.lowerBetaLimit = Math.PI / 6;
-
+        this.mainCamera = new BABYLON.ArcRotateCamera("mainCamera", Math.PI / 4, Math.PI / 3, 9, new BABYLON.Vector3(-1, 0, 0), scene);
+        this.mainCamera.attachControl(canvas);
+        this.mainCamera.upperRadiusLimit = 10;
+        this.mainCamera.lowerRadiusLimit = 3;
+        this.mainCamera.upperBetaLimit = Math.PI / 3;
+        this.mainCamera.lowerBetaLimit = Math.PI / 6;
 
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
