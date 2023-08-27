@@ -22,6 +22,8 @@ export class Game
         this.mainCamera.upperBetaLimit = Math.PI / 3;
         this.mainCamera.lowerBetaLimit = Math.PI / 6;
 
+        this.scene.debugLayer.show();
+
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
         // Default intensity is 1. Let's dim the light a small amount
@@ -31,6 +33,7 @@ export class Game
     async Start() : Promise<void> 
     {
         const pointerMesh = await this.LoadEntity("pointer", new BABYLON.Vector3(0.7, 0.7, 0.7));
+        pointerMesh.isVisible = true;
         
         this.board = await GameLevel.LoadFromJSONAsync("level0", this.scene);
         this.cursor = new Cursor(this.board, this.scene, this.mainCamera, pointerMesh as BABYLON.Mesh);    

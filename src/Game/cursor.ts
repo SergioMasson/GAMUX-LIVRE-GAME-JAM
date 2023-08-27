@@ -64,8 +64,22 @@ export class Cursor
       this.fixed = true;
     }
   
-    unfixCursor(): void{
+    unfixCursor(): void {
       this.fixed = false;
+    }
+  
+    moveCursorTo(x: number, z: number, tall: boolean): void {
+      let pos = this.board.GetCellCenterPosition(x, z);
+      this.transformNode.setAbsolutePosition(pos);
+
+      if (tall) {
+        this.animationGroupHigh.play(true);
+        this.animationGroupLow.stop();
+      }
+      else {
+        this.animationGroupLow.play(true);
+        this.animationGroupHigh.stop();
+      }
     }
  
     Update() : void

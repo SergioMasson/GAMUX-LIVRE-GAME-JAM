@@ -29,16 +29,16 @@ export class Entity
 
     private attackAnim: BABYLON.AnimationGroup;
 
-    constructor(board : Board, rootMesh: BABYLON.Mesh, type: string, maxHealth: number, attackPoints: number, shield: BABYLON.Mesh) 
+    constructor(board : Board, rootMesh: BABYLON.Mesh, type: string, maxHealth: number, attackPoints: number, attackRange: number, range: number, shield: BABYLON.Mesh) 
     {
         this.mainBoard = board;
         this.instanceMesh = rootMesh.createInstance("entity");
         this.instanceMesh.metadata = { type: "entity", x: 0, z: 0};
-        this.moveRange = 4;
-        this.attackRange = 2;
+        this.moveRange = range;
+        this.attackRange = attackRange;
 
         this.blockShield = shield.createInstance("entity_shield");
-        this.transformNode = new BABYLON.TransformNode("CursorRoot");
+        this.transformNode = new BABYLON.TransformNode("EntityRoot");
         this.instanceMesh.setParent(this.transformNode, true);
         this.blockShield.setParent(this.transformNode, true);
         this.blockShield.position.y = -10000000;
@@ -175,6 +175,7 @@ export class Entity
             this.mainBoard.RemoveEntityFromCell(this.boardPosition.x, this.boardPosition.y);
             this.healthBar.dispose();
             this.instanceMesh.dispose();
+            this.blockShield.dispose();
         }
     }
 }

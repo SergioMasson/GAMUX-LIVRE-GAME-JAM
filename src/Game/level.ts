@@ -37,7 +37,7 @@ export class GameLevel
         for (let index = 0; index < json.players.length; index++) {
             const playerData = json.players[index];
             const playerMesh = meshTable[playerData.type];
-            var player0 = new Entity(board, playerMesh as BABYLON.Mesh, "player", playerData.health, playerData.attack, shieldMesh as BABYLON.Mesh);
+            var player0 = new Entity(board, playerMesh as BABYLON.Mesh, "player", playerData.health, playerData.attack, playerData.attackRange, playerData.range, shieldMesh as BABYLON.Mesh);
             player0.SetPosition(playerData.x, playerData.z);
         }
 
@@ -46,7 +46,7 @@ export class GameLevel
             const enemyMesh = meshTable[enemyData.type];
             const enemyHealth = enemyData.health;
             const enemyAttack = enemyData.attack;
-            const enemy0 = new Entity(board, enemyMesh as BABYLON.Mesh, "enemy",  enemyHealth, enemyAttack, shieldMesh as BABYLON.Mesh);
+            const enemy0 = new Entity(board, enemyMesh as BABYLON.Mesh, "enemy",  enemyHealth, enemyAttack, enemyData.attackRange, enemyData.range, shieldMesh as BABYLON.Mesh);
             enemy0.SetPosition(enemyData.x, enemyData.z);
             enemy0.SetLookDirection(LookDirection.X_PLUS);
         }
