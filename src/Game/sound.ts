@@ -42,6 +42,12 @@ export class Sound
 		let efeitos = this;
 	}
 
+	public MuteMusic(): void {
+		this.layer1.setVolume(0);
+		this.layer2.setVolume(0);
+		this.layer3.setVolume(0);
+	}
+
 	public Layer1(): void {
 		this.layer1.setVolume(2);
 		this.layer2.setVolume(0);

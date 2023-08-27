@@ -97,6 +97,8 @@ export class Game
 
         var advancedTexture = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
         advancedTexture.parseFromURLAsync("./UI/END_SCREEN.json");
+
+        this.sound.MuteMusic();
     }
 
     Update(deltaT: number) : void
