@@ -75,6 +75,16 @@ export class Board
         }
     }
 
+    GetBoundsDepth() : BABYLON.Vector2
+    {
+        return new BABYLON.Vector2(-((this.height - 1) * CELL_DEPTH) / 2, ((this.height - 1) * CELL_DEPTH) / 2);
+    }
+
+    GetBoundsWidth() : BABYLON.Vector2
+    {
+        return new BABYLON.Vector2(-((this.width - 1) * CELL_WIDTH) / 2, ((this.width - 1) * CELL_WIDTH) / 2);
+    }
+
     HighlightCells(x: number, z: number, range: number): void
     {
         const tabuleiro = this;
