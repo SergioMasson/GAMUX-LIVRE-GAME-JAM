@@ -2,36 +2,27 @@
     "boardWidth" : 30,
     "boardHeight" : 30,
     "boardOddColor": {
-        "r": 0.75,
-        "g": 0.75,
-        "b": 0.25
+        "r": 1,
+        "g": 0,
+        "b": 1
     },
     "boardEvenColor": {
-        "r": 0.55,
-        "g": 0.55,
-        "b": 0.25
+        "r": 0.75,
+        "g": 0.25,
+        "b": 0.75
     },
     "players": [
         {
-            "x": 11,
+            "x": 1,
             "z": 1,
             "type": "swordman",
-            "attack": 1,
-            "health": 2,
+            "attack": 2,
+            "health": 1,
             "attackRange": 2,
             "range": 4
         },
         {
-            "x": 13,
-            "z": 1,
-            "type": "swordman",
-            "attack": 1,
-            "health": 2,
-            "attackRange": 2,
-            "range": 4
-        },
-        {
-            "x": 15,
+            "x": 2,
             "z": 1,
             "type": "druidGirl",
             "attack": 2,
@@ -40,7 +31,7 @@
             "range": 4
         },
         {
-            "x": 17,
+            "x": 3,
             "z": 1,
             "type": "druidGirl",
             "attack": 2,
@@ -51,35 +42,17 @@
     ],
     "enemies": [
         {
-            "x": 13,
-            "z": 18,
-            "type": "death",
-            "attack": 1,
-            "health": 4,
-            "attackRange": 1,
-            "range": 2
-        },
-        {
-            "x": 12,
-            "z": 18,
-            "type": "death",
-            "attack": 1,
-            "health": 4,
-            "attackRange": 1,
-            "range": 2
-        },
-        {
-            "x": 7,
-            "z": 11,
-            "type": "enemy",
-            "attack": 1,
-            "health": 4,
-            "attackRange": 1,
-            "range": 2
-        },
-        {
-            "x": 8,
+            "x": 6,
             "z": 12,
+            "type": "death",
+            "attack": 1,
+            "health": 4,
+            "attackRange": 1,
+            "range": 2
+        },
+        {
+            "x": 2,
+            "z": 11,
             "type": "enemy",
             "attack": 1,
             "health": 4,
@@ -90,15 +63,15 @@
     "environments":[
         {
             "type": "flower",
-            "count": 5
+            "count": 50
         },
         {
             "type": "grass",
-            "count": 5
+            "count": 50
         },
         {
             "type": "stone",
-            "count": 50
+            "count": 10
         }
     ]
 }
