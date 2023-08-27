@@ -3,6 +3,7 @@ import { EntitySelectState } from "./entitySelectState";
 import { CellSelectState } from "./cellSelectState";
 import { EntityMoveState } from "./entityMoveState";
 import { ActionSelectState } from "./actionSelectState";
+import { ActionExecuteState } from "./actionExecuteState";
 import { Board } from "../board";
 import { Cursor } from "../cursor";
 import * as BABYLON from "@babylonjs/core";
@@ -22,6 +23,7 @@ export class GameStateMachine
         this.states.push(new CellSelectState(scene, board, camera, cursor));
         this.states.push(new EntityMoveState(scene, board, camera, cursor));
         this.states.push(new ActionSelectState(scene, board, camera, cursor));
+        this.states.push(new ActionExecuteState(scene, board, camera, cursor));
         this.currentStateIndex = 0;
 
         let currentState = this.GetCurrentState();

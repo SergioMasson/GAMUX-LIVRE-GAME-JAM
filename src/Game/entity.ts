@@ -1,4 +1,5 @@
 import { Board } from "./board";
+import { AnimCreator } from "./animCreator";
 import * as BABYLON from "@babylonjs/core/";
 
 // Base class for players and enemies. 
@@ -11,11 +12,16 @@ export class Entity
     private attackRange: number;
     private startHealth: number;
     private health: number;
+    private attackPoints: number;
     private transformNode: BABYLON.TransformNode;
-    private animationGroup: BABYLON.AnimationGroup;
     private type: string;
+    private healthBar: BABYLON.Mesh;
+    private isBlocking: boolean;
+    private blockShield: BABYLON.InstancedMesh;
 
-    constructor(board : Board, rootMesh: BABYLON.Mesh, type: string, maxHealth: number) 
+    private attackAnim: BABYLON.AnimationGroup;
+
+    constructor(board : Board, rootMesh: BABYLON.Mesh, type: string, maxHealth: number, attackPoints: number, shield: BABYLON.Mesh) 
     {
         this.mainBoard = board;
         this.instanceMesh = rootMesh.createInstance("entity");
@@ -23,8 +29,14 @@ export class Entity
         this.moveRange = 4;
         this.attackRange = 2;
 
+        this.blockShield = shield.createInstance("entity_shield");
+
         this.transformNode = new BABYLON.TransformNode("CursorRoot");
         this.instanceMesh.setParent(this.transformNode, true);
+        this.blockShield.setParent(this.transformNode, true);
+        this.blockShield.position.y = -10000000;
+        this.blockShield.rotation = new BABYLON.Vector3(0, 0, 0);
+        this.blockShield.scaling.x = this.blockShield.scaling.y = this.blockShield.scaling.z = 0.3;
 
         this.instanceMesh.metadata = {
             type: type,
@@ -42,13 +54,20 @@ export class Entity
 
         this.startHealth = maxHealth;
         this.health = this.startHealth;
+        this.attackPoints = attackPoints;
 
         let material = new BABYLON.StandardMaterial("")
         plane.material = material;
         material.emissiveColor = new BABYLON.Color3(0.7, 0.2, 0.2);
-        
-        //plane.scaling.x = 0.25;
+
+        this.healthBar = plane;
+
+        this.attackAnim = new BABYLON.AnimationGroup("");
+        this.attackAnim.addTargetedAnimation(AnimCreator.CreateUpDownAnimation(0, 1, 0.5), this.instanceMesh);
+
+        this.isBlocking = false;
     }
+
 
     public CanMove(x: number, z: number) : boolean
     {
@@ -90,5 +109,44 @@ export class Entity
 
     public GetType(): string {
         return this.instanceMesh.metadata.type;
+    }
+
+    public GetAttackPoints(): number {
+        return this.attackPoints;
+    }
+
+    public PlayAttackAnim(): void {
+        this.attackAnim.play();
+    }
+
+    public IsAnimating(): boolean {
+        return this.attackAnim.isPlaying;
+    }
+
+    public IsBlocking(): boolean {
+        return this.isBlocking;
+    }
+
+    public Block(): void {
+        this.isBlocking = true;
+        this.blockShield.position.y = 1.2;
+    }
+
+    public Unblock(): void {
+        this.isBlocking = false;
+        this.blockShield.position.y = -10000;
+    }
+
+    public InflictDamage(amount: number): void {
+        this.health -= amount;
+
+        if (this.health > 0) {
+            this.healthBar.scaling.x = this.health / this.startHealth;
+        }
+        else {
+            this.mainBoard.RemoveEntityFromCell(this.boardPosition.x, this.boardPosition.y);
+            this.healthBar.dispose();
+            this.instanceMesh.dispose();
+        }
     }
 }

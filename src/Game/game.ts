@@ -16,6 +16,7 @@ export class Game
     private playerMesh : BABYLON.AbstractMesh;
     private enemyMesh: BABYLON.AbstractMesh;
     private pointerMesh: BABYLON.AbstractMesh;
+    private shieldMesh: BABYLON.AbstractMesh;
 
     private players : Array<Entity>;
     private enemies : Array<Entity>;
@@ -24,6 +25,8 @@ export class Game
 
     private gameStateMachine: GameStateMachine;
     private environmentCreator: EnvironmentCreator;
+
+    private loadedAnims: Array<BABYLON.Animation>;
 
     constructor(scene: BABYLON.Scene, canvas : HTMLCanvasElement) 
     {
@@ -43,6 +46,7 @@ export class Game
 
         // Default intensity is 1. Let's dim the light a small amount
         light.intensity = 0.7;
+        this.loadedAnims = [];
     }
 
     async Start() : Promise<void> 
@@ -50,17 +54,18 @@ export class Game
         this.playerMesh = await this.LoadEntity("swordman");
         this.enemyMesh = await this.LoadEntity("enemy");
         this.pointerMesh = await this.LoadEntity("pointer");
+        this.shieldMesh = await this.LoadEntity("shield");
 
         this.pointerMesh.isVisible = true;
         this.pointerMesh.scaling = new BABYLON.Vector3(0.7, 0.7, 0.7);
 
-        var player0 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player", 2);
+        var player0 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player", 2, 1, this.shieldMesh as BABYLON.Mesh);
         player0.SetPosition(1, 0);
 
-        var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player", 2);
+        var player1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "player", 2, 1, this.shieldMesh as BABYLON.Mesh);
         player1.SetPosition(2, 0);
 
-        var enemy1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "enemy", 4);
+        var enemy1 = new Entity(this.board, this.playerMesh as BABYLON.Mesh, "enemy", 4, 0.5, this.shieldMesh as BABYLON.Mesh);
         enemy1.SetPosition(3, 0);
 
         this.cursor = new Cursor(this.board, this.scene, this.mainCamera, this.pointerMesh as BABYLON.Mesh);
@@ -68,7 +73,10 @@ export class Game
 
         await this.environmentCreator.Populate(this.board, this.scene);
 
-        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera, this.cursor)
+        this.gameStateMachine = new GameStateMachine(this.board, this.scene, this.mainCamera, this.cursor);
+
+        //let attackAnim = await BABYLON.Animation.ParseFromFileAsync(null, "https://doc.babylonjs.com/examples/animations.json");
+        //this.loadedAnims.push(attackAnim);
     }
 
     async LoadEntity(entityName: string) : Promise<BABYLON.AbstractMesh>

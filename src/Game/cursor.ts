@@ -1,5 +1,6 @@
 import * as BABYLON from "@babylonjs/core";
 import { Board } from "./board";
+import { AnimCreator } from "./animCreator";
 
 const CURSOR_BASE_HEIGHT = 0.5;
 
@@ -44,37 +45,7 @@ export class Cursor
     }
 
     private CreateUpDownAnimation(base: number, top: number, animgroup: BABYLON.AnimationGroup): void {
-        const frameRate = 30;
-        const animDuration = 2 * frameRate;   
-    
-        var jumpY = new BABYLON.Animation(
-          "jumpY",
-          "position.y",
-          frameRate,
-          BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-          BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
-        );
-    
-        var jumpYKeys = [];
-    
-        jumpYKeys.push({
-          frame: 0,
-          value:  base
-        });
-    
-        jumpYKeys.push({
-          frame: 0.5 * animDuration,
-          value: top
-        });
-    
-        jumpYKeys.push({
-          frame: 1 * animDuration,
-          value: base
-        });
-    
-    
-        jumpY.setKeys(jumpYKeys);  
-        animgroup.addTargetedAnimation(jumpY, this.mesh);
+        animgroup.addTargetedAnimation(AnimCreator.CreateUpDownAnimation(base, top, 2), this.mesh);
     }
   
     getCursorOverEntity(): boolean {

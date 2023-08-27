@@ -9,6 +9,7 @@ export class ActionSelectState implements GameState
     private board: Board;
     private UI: GUI.AdvancedDynamicTexture;
     private shouldEnd: boolean;
+    private gameState: Array<number>;
     
     constructor(scene: BABYLON.Scene, board: Board, camera: BABYLON.Camera, cursor: Cursor)
     {
@@ -25,6 +26,8 @@ export class ActionSelectState implements GameState
         button1.onPointerUpObservable.add(function() {
             actionState.UI.dispose();
             actionState.shouldEnd = true;
+            if (texto === "Atacar") actionState.gameState.push(1);
+            else actionState.gameState.push(0);
         });
 
         button1.horizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
@@ -38,7 +41,6 @@ export class ActionSelectState implements GameState
 
     Start(state: Array<number>): void 
     {
-        let entity = this.board.GetEntityAtCell(state[2], state[3]);
         let adjacentCells = this.board.FindAround(state[2], state[3], 2, "cell", true);
         let attackedEntities = [];
         this.UI = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
@@ -60,13 +62,15 @@ export class ActionSelectState implements GameState
             this.UI.addControl(this.createButton("Bloquear", 0, 50, this));
         }
 
+        this.gameState = state;
+
         this.shouldEnd = false;
     }
 
     End(): Array<Number> 
     {
         this.UI.dispose();
-        return [0];
+        return this.gameState;
     }
 
     Update(deltaT : number): void 

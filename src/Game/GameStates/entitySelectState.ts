@@ -32,7 +32,10 @@ export class EntitySelectState implements GameState
                     let entity = this.board.GetEntityAtCell(cursorPos.x, cursorPos.y);
 
                     if (entity) {
-                        if(entity.GetType() === "player") this.shouldEnd = true;
+                        if (entity.GetType() === "player") {
+                            this.shouldEnd = true;
+                            entity.Unblock();
+                        }
                     }
                 }
             }
