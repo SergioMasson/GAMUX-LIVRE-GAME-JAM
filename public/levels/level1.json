@@ -1,6 +1,6 @@
 {
-    "boardWidth" : 30,
-    "boardHeight" : 30,
+    "boardWidth" : 24,
+    "boardHeight" : 24,
     "boardOddColor": {
         "r": 0.75,
         "g": 0.75,
@@ -98,7 +98,7 @@
         },
         {
             "type": "stone",
-            "count": 50
+            "count": 200
         }
     ]
 }
