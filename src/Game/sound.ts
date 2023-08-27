@@ -8,16 +8,12 @@ export class Sound
 	private move: BABYLON.Sound;
 
 	constructor(scene: BABYLON.Scene) {
-		this.attackSfx = new BABYLON.Sound("Attack_sfx", "./sfx/attack.wav", scene, function () { });
-		this.select1 = new BABYLON.Sound("Select1", "./sfx/select1.wav", scene, function () { });
-		this.select2 = new BABYLON.Sound("Select1", "./sfx/select2.wav", scene, function () { });
-		this.move =  new BABYLON.Sound("Move", "./sfx/move.wav", scene, function () {});
+		this.attackSfx = new BABYLON.Sound("Attack_sfx", "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/sfx/attack.wav", scene, function () { });
+		this.select1 = new BABYLON.Sound("Select1", "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/sfx/select1.wav", scene, function () { });
+		this.select2 = new BABYLON.Sound("Select1", "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/sfx/select2.wav", scene, function () { });
+		this.move =  new BABYLON.Sound("Move", "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/sfx/move.wav", scene, function () {});
 
 		let efeitos = this;
-
-		window.addEventListener("keydown", function () { 
-			efeitos.AttackSound();
-		});
 	}
 
 	public AttackSound(): void {
