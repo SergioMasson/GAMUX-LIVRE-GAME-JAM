@@ -20,7 +20,7 @@ export class Board
 
     private boardTransform: BABYLON.TransformNode;
 
-    constructor(scene: BABYLON.Scene, width: number, height: number)
+    constructor(scene: BABYLON.Scene, width: number, height: number, evenColor: BABYLON.Color3, oddColor: BABYLON.Color3)
     {
         this.cells = new Array<BABYLON.Mesh>();
         this.boardTransform = new BABYLON.TransformNode("Board Root");
@@ -44,8 +44,6 @@ export class Board
 
                 const cellMaterial = new BABYLON.StandardMaterial("");
                 cell.material = cellMaterial;
-                const evenColor = new BABYLON.Color3(0, 1, 0.25);
-                const oddColor = new BABYLON.Color3(0.25, 0.75, 0.25);
                 cellMaterial.diffuseColor = (x & 1) ^ (z & 1) ? evenColor : oddColor;
                 this.cells.push(cell);
 

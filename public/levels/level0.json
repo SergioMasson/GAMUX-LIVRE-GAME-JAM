@@ -1,24 +1,67 @@
 {
-    "boardWidth" : 10,
-    "boardHeight" : 10,
+    "boardWidth" : 30,
+    "boardHeight" : 30,
+    "boardOddColor": {
+        "r": 0,
+        "g": 1,
+        "b": 0.25
+    },
+    "boardEvenColor": {
+        "r": 0.25,
+        "g": 0.75,
+        "b": 0.25
+    },
     "players": [
         {
             "x": 1,
-            "y": 1
+            "z": 1,
+            "type": "swordman",
+            "attack": 2,
+            "health": 1
         },
         {
             "x": 2,
-            "y": 1
+            "z": 1,
+            "type": "druidGirl",
+            "attack": 2,
+            "health": 1
+        },
+        {
+            "x": 3,
+            "z": 1,
+            "type": "druidGirl",
+            "attack": 2,
+            "health": 1
         }
     ],
     "enemies": [
         {
-            "x": 1,
-            "y": 1
+            "x": 6,
+            "z": 12,
+            "type": "enemy",
+            "attack": 1,
+            "health": 4
         },
         {
             "x": 2,
-            "y": 1
+            "z": 11,
+            "type": "enemy",
+            "attack": 1,
+            "health": 4
+        }
+    ],
+    "environments":[
+        {
+            "type": "flower",
+            "count": 50
+        },
+        {
+            "type": "grass",
+            "count": 50
+        },
+        {
+            "type": "stone",
+            "count": 10
         }
     ]
 }
