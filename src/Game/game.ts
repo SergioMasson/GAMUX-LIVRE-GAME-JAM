@@ -35,6 +35,11 @@ export class Game
         mainCamera.lowerRadiusLimit = 3;
         mainCamera.upperBetaLimit = Math.PI / 3;
         mainCamera.lowerBetaLimit = Math.PI / 6;
+        mainCamera.target = new BABYLON.Vector3(-7, 0, -4);
+        mainCamera.radius = 8;
+        mainCamera.alpha = Math.PI / 4;
+        mainCamera.beta = Math.PI / 3;
+
 
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this.scene);
         light.intensity = 0.7;
