@@ -41,13 +41,15 @@ export class Game
         mainCamera.beta = Math.PI / 3;
 
 
+        this.scene.debugLayer.show();
+
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this.scene);
         light.intensity = 0.7;
 
         const pointerMesh = await this.LoadEntity("pointer", new BABYLON.Vector3(0.7, 0.7, 0.7));
         pointerMesh.isVisible = true;
         
-        this.board = await GameLevel.LoadFromJSONAsync(level, this.scene);
+        this.board = await GameLevel.LoadFromJSONAsync(level, this.scene, mainCamera);
         this.cursor = new Cursor(this.board, this.scene, mainCamera, pointerMesh as BABYLON.Mesh);    
         this.gameStateMachine = new GameStateMachine(this.board, this.scene, mainCamera, this.cursor, this.sound);
         this.disposed = false;
