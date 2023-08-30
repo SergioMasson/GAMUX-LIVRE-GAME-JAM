@@ -40,9 +40,6 @@ export class Game
         mainCamera.alpha = Math.PI / 4;
         mainCamera.beta = Math.PI / 3;
 
-
-        this.scene.debugLayer.show();
-
         var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this.scene);
         light.intensity = 0.7;
 
