@@ -8,8 +8,6 @@ const privateURL = ".";
 const isLocal = false;
 
 export class GameLevel {
-    private constructor() {
-    }
 
     public static async LoadFromJSONAsync(levelName: string, scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera): Promise<Board> {
         const response = await fetch(`${isLocal ? privateURL: publicURL}/levels/${levelName}.json`);
