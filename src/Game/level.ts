@@ -3,15 +3,16 @@ import { Entity } from "./entity";
 import { LookDirection } from "./entity";
 import * as BABYLON from "@babylonjs/core";
 
-export class GameLevel 
-{
-    private constructor()
-    {
+const publicURL = "https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public";
+const privateURL = ".";
+const isLocal = false;
+
+export class GameLevel {
+    private constructor() {
     }
 
-    public static async LoadFromJSONAsync(levelName: string, scene: BABYLON.Scene) : Promise<Board>
-    {
-        const response = await fetch(`https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/levels/${levelName}.json`);
+    public static async LoadFromJSONAsync(levelName: string, scene: BABYLON.Scene, camera: BABYLON.ArcRotateCamera): Promise<Board> {
+        const response = await fetch(`${isLocal ? privateURL: publicURL}/levels/${levelName}.json`);
         const json = await response.json();
 
         const width = json.boardWidth;
@@ -46,7 +47,7 @@ export class GameLevel
             const enemyMesh = meshTable[enemyData.type];
             const enemyHealth = enemyData.health;
             const enemyAttack = enemyData.attack;
-            const enemy0 = new Entity(board, enemyMesh as BABYLON.Mesh, "enemy",  enemyHealth, enemyAttack, enemyData.attackRange, enemyData.range, shieldMesh as BABYLON.Mesh);
+            const enemy0 = new Entity(board, enemyMesh as BABYLON.Mesh, "enemy", enemyHealth, enemyAttack, enemyData.attackRange, enemyData.range, shieldMesh as BABYLON.Mesh);
             enemy0.SetPosition(enemyData.x, enemyData.z);
             enemy0.SetLookDirection(LookDirection.X_PLUS);
         }
@@ -66,16 +67,40 @@ export class GameLevel
         for (let index = 0; index < json.environments.length; index++) {
             const environmentData = json.environments[index];
             const envMesh = meshTable[environmentData.type];
-            this.DistributeRandomMeshes(envMesh as BABYLON.Mesh, environmentData.count, maxX, minX, maxZ,minZ);
+            this.DistributeRandomMeshes(envMesh as BABYLON.Mesh, environmentData.count, maxX, minX, maxZ, minZ);
         }
 
+        this.SetCamera(json, camera);
         return board;
     }
 
-    private static DistributeRandomMeshes(mesh: BABYLON.Mesh, count: number, maxX: number, minX: number, maxZ: number, minZ: number)
-    {
-        for (let index = 0; index < count; index++) 
-        {
+    private static SetCamera(json: any, camera: BABYLON.ArcRotateCamera) {
+        if (!json.camera) {
+            return;
+        }
+
+        const camereJSON = json.camera;
+
+        if (camereJSON.target) {
+            camera.target = new BABYLON.Vector3(camereJSON.target.x, camereJSON.target.y, camereJSON.target.z);
+        }
+
+        if (camereJSON.alpha) {
+            camera.alpha = camereJSON.alpha;
+        }
+
+        if (camereJSON.beta) {
+            camera.beta = camereJSON.beta;
+        }
+
+        if (camereJSON.radius) {
+            camera.radius = camereJSON.radius;
+        }
+
+    }
+
+    private static DistributeRandomMeshes(mesh: BABYLON.Mesh, count: number, maxX: number, minX: number, maxZ: number, minZ: number) {
+        for (let index = 0; index < count; index++) {
             const instance = mesh.createInstance(`${mesh.name}_instance${index}`);
             instance.isVisible = true;
             instance.isPickable = false;
@@ -85,8 +110,7 @@ export class GameLevel
         }
     }
 
-    static async LoadEntity(entityName: string, scaling: BABYLON.Vector3) : Promise<BABYLON.AbstractMesh>
-    {
+    static async LoadEntity(entityName: string, scaling: BABYLON.Vector3): Promise<BABYLON.AbstractMesh> {
         const resultPlayer = await BABYLON.SceneLoader.ImportMeshAsync(null, "", `https://raw.githubusercontent.com/SergioMasson/GAMUX-LIVRE-GAME-JAM/main/public/models/${entityName}.glb`);
         const result = resultPlayer.meshes[0].getChildMeshes()[0];
         result.scaling = scaling;
